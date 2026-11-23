@@ -140,7 +140,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
               <div className="space-y-1 text-xs uppercase tracking-[0.12em] text-[#6a5f4e] sm:text-sm">
                 <p>{candidate.roleType === "recruiter" ? "Recruiter Passport" : "Passport"}</p>
                 {candidate.targetRoles.length > 0 ? (
-                  <p className="text-[#d8aa14]">Open to {candidate.targetRoles.slice(0, 2).join(" / ")}</p>
+                  <p className="text-[#8a6a00]">Open to {candidate.targetRoles.slice(0, 2).join(" / ")}</p>
                 ) : null}
               </div>
             </div>

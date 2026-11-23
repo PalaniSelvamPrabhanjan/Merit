@@ -13,9 +13,10 @@ describe("auth next URL helpers", () => {
     );
   });
 
-  it("falls back to home for unsafe next paths", () => {
-    expect(resolveSafeAuthNext("https://evil.example/claim")).toBe("/home");
-    expect(resolveSafeAuthNext("//evil.example/claim")).toBe("/home");
+  it("falls back to the dashboard for unsafe or missing next paths", () => {
+    expect(resolveSafeAuthNext("https://evil.example/claim")).toBe("/profile");
+    expect(resolveSafeAuthNext("//evil.example/claim")).toBe("/profile");
+    expect(resolveSafeAuthNext(null)).toBe("/profile");
     expect(buildAuthPath("/sign-in", "https://evil.example/claim")).toBe("/sign-in");
   });
 });

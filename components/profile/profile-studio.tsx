@@ -875,16 +875,17 @@ export function ProfileStudio({
 
       return (
         <section className="space-y-8" id="section-dashboard">
-          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.72fr)]">
+          <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.72fr)]">
             <Card className="space-y-5 bg-transparent">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="label-caps mb-2">Profile information</p>
-                  <h2 className="font-serif text-2xl text-[#16130f]">Identity</h2>
+                  <p className="label-caps mb-2">Profile</p>
+                  <h2 className="font-serif text-2xl text-[#16130f]">About you</h2>
                 </div>
                 <IconButton
                   icon={isInlineIdentityEditing ? "x" : "pencil"}
                   label={isInlineIdentityEditing ? "Cancel profile edits" : "Edit profile information"}
+                  text={isInlineIdentityEditing ? "Cancel" : "Edit"}
                   onClick={() => {
                     if (isInlineIdentityEditing) {
                       setNameDraft(profile.name);
@@ -974,12 +975,13 @@ export function ProfileStudio({
             <Card className="space-y-5 bg-transparent">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="label-caps mb-2">Links and signals</p>
+                  <p className="label-caps mb-2">Contact and links</p>
                   <h2 className="font-serif text-2xl text-[#16130f]">Contact</h2>
                 </div>
                 <IconButton
                   icon={isInlinePassportEditing ? "x" : "pencil"}
-                  label={isInlinePassportEditing ? "Cancel link edits" : "Edit links and signals"}
+                  label={isInlinePassportEditing ? "Cancel contact edits" : "Edit contact, resume and links"}
+                  text={isInlinePassportEditing ? "Cancel" : "Edit"}
                   onClick={() => {
                     if (isInlinePassportEditing) {
                       setContactEmailDraft(profile.contactEmail);
@@ -1044,7 +1046,7 @@ export function ProfileStudio({
               ) : (
                 <div className="space-y-5 text-sm">
                   <div>
-                    <p className="label-caps mb-2">Open to</p>
+                    <p className="label-caps mb-2">Roles you want</p>
                     {profile.targetRoles.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {profile.targetRoles.map((role) => (
@@ -1103,12 +1105,11 @@ export function ProfileStudio({
                 <h2 className="font-serif text-2xl text-[#16130f]">Published work</h2>
               </div>
               <Link
-                aria-label="Add project"
-                className={iconControlClassName({ variant: "primary" })}
+                className={iconControlClassName({ variant: "primary", withText: true })}
                 href="/projects/new"
-                title="Add project"
               >
-                <ActionIcon name="plus" />
+                <ActionIcon className="h-5 w-5" name="plus" />
+                <span>Add project</span>
               </Link>
             </div>
             <ProjectRail
@@ -1121,7 +1122,7 @@ export function ProfileStudio({
           <section className="space-y-4">
             <div>
               <p className="label-caps mb-2">Saved projects</p>
-              <h2 className="font-serif text-2xl text-[#16130f]">Reference shelf</h2>
+              <h2 className="font-serif text-2xl text-[#16130f]">Projects you saved</h2>
             </div>
             <ProjectRail
               emptyText="You have not saved any projects yet."
@@ -1142,14 +1143,14 @@ export function ProfileStudio({
 
     if (activeSection === "passport") {
       return (
-        <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px]" id="section-passport">
+        <section className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_340px]" id="section-passport">
           <Card className="space-y-5 bg-transparent">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p className="label-caps mb-2">Passport</p>
                 <h2 className="font-serif text-3xl leading-tight text-[#16130f]">Public profile preview</h2>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-[#6a5f4e]">
-                  This is the dedicated passport surface for sharing and checking how your public profile reads.
+                  A summary of your public Passport. Use View passport to see exactly what employers see.
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -1173,7 +1174,7 @@ export function ProfileStudio({
               <p className="text-sm text-red-700">Could not copy automatically. Open the passport and copy the URL.</p>
             ) : null}
 
-            <div className="grid gap-4 md:grid-cols-[180px_minmax(0,1fr)]">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-[180px_minmax(0,1fr)]">
               <div className="border border-[#d7cebd] bg-[#eee8dd] p-3">
                 <p className="label-caps">Projects</p>
                 <p className="mt-1 text-xl font-semibold text-[#16130f]">{ownProjects.length}</p>
@@ -1286,7 +1287,7 @@ export function ProfileStudio({
 
     if (activeSection === "overview") {
       return (
-        <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px]" id="section-overview">
+        <section className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_340px]" id="section-overview">
           <Card className="space-y-4 bg-transparent">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="space-y-3">
@@ -1321,7 +1322,7 @@ export function ProfileStudio({
               <p className="text-sm text-red-700">Could not copy automatically. Open the passport and copy the URL.</p>
             ) : null}
 
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div className="border border-[#d7cebd] bg-[#eee8dd] p-3">
                 <p className="label-caps">Profile</p>
                 <p className="mt-1 text-xl font-semibold text-[#16130f]">{profile.profileCompletionScore}%</p>
@@ -1401,7 +1402,7 @@ export function ProfileStudio({
 
     if (activeSection === "profile") {
       return (
-        <section className="grid gap-4 xl:grid-cols-2" id="section-profile">
+        <section className="grid grid-cols-1 gap-4 xl:grid-cols-2" id="section-profile">
           <Card className="space-y-4 bg-transparent">
             <div>
               <p className="label-caps mb-2">Edit profile</p>
@@ -1832,7 +1833,7 @@ export function ProfileStudio({
       return (
         <section className="space-y-4" id="section-activity">
           <h2 className="text-xl font-semibold text-ink-950">Activity</h2>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Card className="space-y-1">
               <p className="text-xs uppercase tracking-[0.1em] text-ink-600">Published</p>
               <p className="text-3xl font-semibold text-ink-950">{ownProjects.length}</p>
@@ -1917,7 +1918,7 @@ export function ProfileStudio({
 
   return (
       <section className="editorial-container py-8">
-      <div className="grid gap-6 lg:grid-cols-[180px_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[180px_minmax(0,1fr)]">
         <aside className="hidden pt-3 lg:block">
           <nav className="sticky top-24 space-y-5 text-sm">
             {sections.map((section) => (
@@ -1940,12 +1941,12 @@ export function ProfileStudio({
             <div className="space-y-2">
               <p className="label-caps">{activeSection === "passport" ? "Passport" : "Dashboard"}</p>
               <h1 className="font-serif text-3xl leading-none text-[#16130f]">
-                {activeSection === "passport" ? "Public passport" : "Merit workspace"}
+                {activeSection === "passport" ? "Public passport" : "Your dashboard"}
               </h1>
               <p className="max-w-2xl text-sm leading-6 text-[#6a5f4e]">
                 {activeSection === "passport"
                   ? "Preview and share the public-facing version of your Merit profile."
-                  : "Manage your profile, project proof, resume, portfolio links, and saved references in one place."}
+                  : "Edit your profile, contact details, resume link and projects. Your public Passport is what employers see."}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -1954,14 +1955,14 @@ export function ProfileStudio({
                 icon={copyStatus === "copied" ? "check" : "copy"}
                 label={copyStatus === "copied" ? "Passport link copied" : "Copy passport link"}
                 onClick={copyPassportLink}
+                text={copyStatus === "copied" ? "Copied" : "Copy link"}
               />
               <Link
-                aria-label="View passport"
-                className={iconControlClassName({ variant: "primary" })}
+                className={iconControlClassName({ variant: "primary", withText: true })}
                 href={passportPath}
-                title="View passport"
               >
-                <ActionIcon name="eye" />
+                <ActionIcon className="h-5 w-5" name="eye" />
+                <span>View passport</span>
               </Link>
             </div>
           </header>
@@ -2049,7 +2050,7 @@ export function ProfileStudio({
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <label className="block space-y-2 text-sm text-ink-900">
               Headline
               <Input

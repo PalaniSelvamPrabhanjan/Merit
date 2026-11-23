@@ -1,17 +1,20 @@
 import { getPublicAppUrl } from "@/lib/public-config";
 
 const PROD_FALLBACK_APP_URL = "https://meritsg.com";
+// Where people land after signing in or verifying their email: their own Passport
+// dashboard, not the Explore feed (UX audit C1).
+export const DEFAULT_AUTH_NEXT = "/profile";
 
 export function resolveSafeAuthNext(nextValue: string | null | undefined) {
   if (!nextValue || !nextValue.startsWith("/") || nextValue.startsWith("//")) {
-    return "/home";
+    return DEFAULT_AUTH_NEXT;
   }
   return nextValue;
 }
 
 export function buildAuthPath(path: "/sign-in" | "/sign-up", nextValue: string | null | undefined) {
   const nextPath = resolveSafeAuthNext(nextValue);
-  if (nextPath === "/home") {
+  if (nextPath === DEFAULT_AUTH_NEXT) {
     return path;
   }
   return `${path}?next=${encodeURIComponent(nextPath)}`;
@@ -34,7 +37,7 @@ function resolveAuthBaseUrl() {
   return PROD_FALLBACK_APP_URL;
 }
 
-export function resolveSignupEmailCallbackUrl(nextPath = "/home") {
+export function resolveSignupEmailCallbackUrl(nextPath = DEFAULT_AUTH_NEXT) {
   return `${resolveAuthBaseUrl()}/auth/callback?next=${encodeURIComponent(resolveSafeAuthNext(nextPath))}&from=signup`;
 }
 

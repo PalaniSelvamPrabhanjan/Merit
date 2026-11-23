@@ -71,7 +71,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
   const [hook, setHook] = useState(initialData?.hook ?? initialData?.problemSolved ?? "");
   const [whatWasBuilt, setWhatWasBuilt] = useState(initialData?.whatWasBuilt ?? "");
   const [projectType, setProjectType] = useState(
-    initialData?.projectType ?? normalizeProjectType(initialData?.projectType ?? "web")
+    initialData?.projectType ?? normalizeProjectType(initialData?.projectType ?? "design")
   );
   const [skills, setSkills] = useState((initialData?.skills ?? []).join(", "));
   const [artifactLinks, setArtifactLinks] = useState((initialData?.artifactLinks ?? []).join("\n"));
@@ -729,7 +729,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
                   type="button"
                   variant={coverImageUrl.trim() ? "secondary" : "primary"}
                 >
-                  Use auto preview
+                  Pick automatically
                 </Button>
                 <div className="inline-flex overflow-hidden rounded-xl border border-ink-200">
                   <button
@@ -739,7 +739,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
                     onClick={() => setThumbnailObjectFit("contain")}
                     type="button"
                   >
-                    Fit contain
+                    Show whole image
                   </button>
                   <button
                     className={`border-l border-ink-200 px-3 py-1.5 text-xs font-semibold transition ${
@@ -748,7 +748,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
                     onClick={() => setThumbnailObjectFit("cover")}
                     type="button"
                   >
-                    Fit cover
+                    Crop to fill
                   </button>
                 </div>
               </div>

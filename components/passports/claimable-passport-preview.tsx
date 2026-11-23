@@ -134,7 +134,7 @@ export function ClaimablePassportPreview({ compact = false, passport }: Claimabl
             ) : null}
             <div className="space-y-2 pt-2 text-sm uppercase tracking-[0.12em] text-[#6a5f4e]">
               <p>Claimable Passport</p>
-              <p className={passport.status === "expired" ? "text-red-700" : "text-[#d8aa14]"}>
+              <p className={passport.status === "expired" ? "text-red-700" : "text-[#8a6a00]"}>
                 {statusLabel(passport.status)}
                 {passport.status !== "claimed" ? ` / Expires ${formatDate(passport.claimExpiresAt)}` : ""}
               </p>

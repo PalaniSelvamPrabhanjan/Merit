@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   buildArtifactPreviewUrl,
   detectArtifactType,
+  getArtifactDisplayLabel,
   normalizeArtifactUrl,
   resolveArtifactViewer,
+  resolveProjectImageGallery,
   resolveProjectViewerSource,
   resolveProjectVisualPreview
 } from "@/lib/artifacts";
@@ -94,5 +96,28 @@ describe("artifact helpers", () => {
     expect(source.kind).toBe("website");
     expect(source.embedUrl).toBe("https://demo.example.com");
     expect(source.source).toBe("artifact");
+  });
+});
+
+describe("uploaded artifact labels and gallery dedupe", () => {
+  const storage = "https://abc.supabase.co/storage/v1/object/public/project-artifacts/user-1";
+
+  it("labels uploaded files by their original file name, not the storage host", () => {
+    expect(getArtifactDisplayLabel(`${storage}/1763880000000-k3j9xq-Final_UI.png`)).toBe("Final_UI.png");
+  });
+
+  it("keeps the host label for ordinary links", () => {
+    expect(getArtifactDisplayLabel("https://www.figma.com/file/abc")).toBe("figma.com");
+  });
+
+  it("drops a gallery image that is the same uploaded file as the cover", () => {
+    const gallery = resolveProjectImageGallery({
+      coverImageUrl: `${storage}/1763880000001-aaaaaa-final.png`,
+      artifacts: [
+        { url: `${storage}/1763880000002-bbbbbb-sketch.png`, type: "image", previewUrl: null, label: "sketch.png" },
+        { url: `${storage}/1763880000003-cccccc-final.png`, type: "image", previewUrl: null, label: "final.png" }
+      ]
+    });
+    expect(gallery.map((item) => item.label)).toEqual(["Cover image", "sketch.png"]);
   });
 });

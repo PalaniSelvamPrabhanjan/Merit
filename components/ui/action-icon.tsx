@@ -31,7 +31,7 @@ type ActionIconProps = {
 type IconControlVariant = "primary" | "secondary" | "ghost" | "danger";
 
 const iconControlVariants: Record<IconControlVariant, string> = {
-  primary: "text-[#c79a00] hover:text-[#16130f]",
+  primary: "text-[#8a6a00] hover:text-[#16130f]",
   secondary: "text-[#16130f] hover:text-[#8c6d00]",
   ghost: "text-[#6f6658] hover:text-[#16130f]",
   danger: "text-red-700 hover:text-red-900"
@@ -40,16 +40,20 @@ const iconControlVariants: Record<IconControlVariant, string> = {
 export function iconControlClassName({
   active = false,
   className,
-  variant = "secondary"
+  variant = "secondary",
+  withText = false
 }: {
   active?: boolean;
   className?: string;
   variant?: IconControlVariant;
+  /** Icon plus a visible text label instead of an icon-only square. */
+  withText?: boolean;
 } = {}) {
   return cn(
-    "inline-flex h-11 w-11 shrink-0 items-center justify-center border-0 bg-transparent p-0 transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-45",
+    "inline-flex h-11 shrink-0 items-center justify-center border-0 bg-transparent transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-45",
+    withText ? "gap-1.5 px-2 text-sm font-medium" : "w-11 p-0",
     iconControlVariants[variant],
-    active ? "text-[#c79a00]" : null,
+    active ? "text-[#8a6a00]" : null,
     className
   );
 }
@@ -59,6 +63,8 @@ export interface IconButtonProps
   active?: boolean;
   icon: ActionIconName;
   label: string;
+  /** Visible text shown next to the icon. `label` stays the accessible name. */
+  text?: string;
   variant?: IconControlVariant;
 }
 
@@ -67,6 +73,7 @@ export function IconButton({
   className,
   icon,
   label,
+  text,
   type = "button",
   variant = "secondary",
   ...props
@@ -74,12 +81,13 @@ export function IconButton({
   return (
     <button
       aria-label={label}
-      className={iconControlClassName({ active, className, variant })}
+      className={iconControlClassName({ active, className, variant, withText: Boolean(text) })}
       title={label}
       type={type}
       {...props}
     >
-      <ActionIcon filled={active} name={icon} />
+      <ActionIcon className={text ? "h-5 w-5" : undefined} filled={active} name={icon} />
+      {text ? <span>{text}</span> : null}
     </button>
   );
 }

@@ -270,7 +270,33 @@ export function buildArtifactPreviewUrl(
   return null;
 }
 
+// Files uploaded through /api/artifacts/upload are stored as
+// <bucket>/<userId>/<timestamp>-<random6>-<sanitisedName> in Supabase Storage.
+const UPLOADED_OBJECT_PATH = /\/storage\/v1\/object\/(?:public|sign)\//;
+const UPLOAD_NAME_PREFIX = /^\d{10,}-[a-z0-9]{6}-/i;
+
+/** Original file name of a Merit-uploaded file, or null for any other URL. */
+export function getUploadedFileName(urlValue: string): string | null {
+  const parsed = safeParseUrl(normalizeArtifactUrl(urlValue));
+  if (!parsed || !UPLOADED_OBJECT_PATH.test(parsed.pathname)) {
+    return null;
+  }
+  const lastSegment = parsed.pathname.split("/").filter(Boolean).pop() ?? "";
+  let decoded = lastSegment;
+  try {
+    decoded = decodeURIComponent(lastSegment);
+  } catch {
+    // keep the raw segment
+  }
+  const name = decoded.replace(UPLOAD_NAME_PREFIX, "");
+  return name || null;
+}
+
 export function getArtifactDisplayLabel(urlValue: string): string {
+  const uploadedName = getUploadedFileName(urlValue);
+  if (uploadedName) {
+    return uploadedName;
+  }
   const normalized = normalizeArtifactUrl(urlValue);
   const parsed = safeParseUrl(normalized);
   if (!parsed) {
@@ -568,14 +594,21 @@ export function resolveProjectImageGallery({
   coverImageUrl: string | null;
 }): ProjectImageGalleryItem[] {
   const images: ProjectImageGalleryItem[] = [];
-  const seenUrls = new Set<string>();
+  const seenKeys = new Set<string>();
 
   const addImage = (urlValue: string | null | undefined, label: string, source: "cover" | "artifact") => {
     const normalized = typeof urlValue === "string" ? urlValue.trim() : "";
-    if (!normalized || seenUrls.has(normalized)) {
+    if (!normalized) {
       return;
     }
-    seenUrls.add(normalized);
+    // The same file uploaded as both thumbnail and gallery image gets two storage URLs,
+    // so compare uploaded files by their original name as well as by URL.
+    const uploadedName = getUploadedFileName(normalized);
+    const keys = [normalized, ...(uploadedName ? [`upload:${uploadedName.toLowerCase()}`] : [])];
+    if (keys.some((key) => seenKeys.has(key))) {
+      return;
+    }
+    keys.forEach((key) => seenKeys.add(key));
     images.push({ label, source, url: normalized });
   };
 
