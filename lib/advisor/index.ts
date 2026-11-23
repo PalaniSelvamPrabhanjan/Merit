@@ -15,7 +15,7 @@ export type {
   StudentProfile,
   StudentProject
 } from "@/lib/advisor/types";
-export { labelForScore, SCORE_LABEL_THRESHOLDS, SEVERITY_ORDER } from "@/lib/advisor/config";
+export { LABEL_CAP_WITH_CRITICAL, labelForReview, labelForScore, SCORE_LABEL_THRESHOLDS, SEVERITY_ORDER } from "@/lib/advisor/config";
 export { RuleBasedAdvisor, runRules } from "@/lib/advisor/runner";
 export { buildStudentContext, emptyStudentContext } from "@/lib/advisor/context";
 export {

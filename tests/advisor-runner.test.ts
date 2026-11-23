@@ -135,6 +135,15 @@ describe("runRules", () => {
   });
 });
 
+describe("label cap", () => {
+  it("never labels a review above Solid while a critical finding is open", () => {
+    const minor: Rule<Doc> = { ...hasTitle, id: "big-pass", weight: 20, severity: "polish", check: () => ({ score: 1 }) };
+    const review = runRules([minor, hasTitle], { title: "", bullets: [], email: "" }, ctx);
+    expect(review.score).toBe(87);
+    expect(review.label).toBe("Solid");
+  });
+});
+
 describe("labelForScore", () => {
   it.each([
     [0, "Getting started"],

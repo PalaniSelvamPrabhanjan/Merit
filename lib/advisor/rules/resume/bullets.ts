@@ -1,5 +1,5 @@
 import type { Rule, RuleFailure } from "@/lib/advisor/types";
-import { leadingActionVerb, pastFormOf, presentFormOf, verbTense } from "@/lib/advisor/data/language";
+import { findFillerPhrases, leadingActionVerb, pastFormOf, presentFormOf, verbTense } from "@/lib/advisor/data/language";
 import { FIRST_PERSON_PATTERN, OUTCOME_WORDS } from "@/lib/advisor/data/resume-terms";
 import { allBullets, hasAnyBullets, truncate, type BulletRef } from "@/lib/advisor/rules/resume/helpers";
 import { cleanBullets } from "@/lib/resume/format";
@@ -28,10 +28,20 @@ export const actionVerbRule: ResumeRule = {
   },
   appliesTo: hasAnyBullets,
   check: (resume) =>
-    perBullet(resume, (bullet) =>
-      leadingActionVerb(bullet.text) ? null : { target: bullet.target, message: `“${truncate(bullet.text, 40)}” doesn't start with an action verb.` }
-    )
+    perBullet(resume, (bullet) => {
+      if (leadingActionVerb(bullet.text)) return null;
+      // Leave these to the rules that explain them better (and offer fixes).
+      if (/^\s*i\s/i.test(bullet.text)) return null;
+      if (startsWithFiller(bullet.text)) return null;
+      return { target: bullet.target, message: `“${truncate(bullet.text, 40)}” doesn't start with an action verb.` };
+    })
 };
+
+/** True when the bullet opens with a filler phrase such as "Responsible for". */
+function startsWithFiller(text: string): boolean {
+  const trimmed = text.trim().toLowerCase();
+  return findFillerPhrases(trimmed).some((entry) => trimmed.startsWith(entry.phrase));
+}
 
 /** "I designed the logo" -> "Designed the logo". Null when no safe rewrite exists. */
 export function withoutLeadingI(text: string): string | null {
@@ -58,6 +68,7 @@ export const pronounRule: ResumeRule = {
       const rewrite = withoutLeadingI(bullet.text);
       return {
         target: bullet.target,
+        message: `“${truncate(bullet.text, 40)}” uses “I”, “me” or “my”.`,
         ...(rewrite && !FIRST_PERSON_PATTERN.test(rewrite)
           ? {
               autoFix: {
@@ -65,7 +76,8 @@ export const pronounRule: ResumeRule = {
                 section: bullet.section,
                 entryIndex: bullet.entryIndex,
                 bulletIndex: bullet.bulletIndex,
-                value: rewrite
+                value: rewrite,
+                label: "Remove “I”"
               }
             }
           : {})
@@ -91,7 +103,7 @@ export const bulletLengthRule: ResumeRule = {
       if (bullet.text.length < BULLET_MIN_CHARS) {
         return {
           target: bullet.target,
-          message: "This bullet is very short.",
+          message: `“${truncate(bullet.text, 40)}” is very short.`,
           suggestion: "Add how you did it or what changed as a result."
         };
       }
@@ -119,7 +131,12 @@ export const quantifiedRule: ResumeRule = {
     example: { weak: "Designed signs for the campus.", strong: "Designed 14 signs that cut route-finding time from 9 to 4 minutes." }
   },
   appliesTo: hasAnyBullets,
-  check: (resume) => perBullet(resume, (bullet) => (OUTCOME_PATTERN.test(bullet.text) ? null : { target: bullet.target }))
+  check: (resume) =>
+    perBullet(resume, (bullet) =>
+      OUTCOME_PATTERN.test(bullet.text)
+        ? null
+        : { target: bullet.target, message: `“${truncate(bullet.text, 40)}” has no number, scale or result.` }
+    )
 };
 
 export const tenseRule: ResumeRule = {

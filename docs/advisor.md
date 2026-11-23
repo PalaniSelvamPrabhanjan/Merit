@@ -96,7 +96,7 @@ export const resumeAdvisor = new RuleBasedAdvisor(resumeRules);
 4. Turns each failure into a `Finding`, using the rule's copy unless the failure overrides it.
 5. **Sorts** findings by severity (critical → improve → polish), then by the points fixing them would add (`weight × (1 − score)`, shared across that rule's failures), then by rule order.
 6. `nextBestAction` = the first finding.
-7. `label` comes from `SCORE_LABEL_THRESHOLDS` in `config.ts`: 0–39 Getting started, 40–64 Solid, 65–84 Strong, 85+ Interview-ready.
+7. `label` comes from `SCORE_LABEL_THRESHOLDS` in `config.ts`: 0–39 Getting started, 40–64 Solid, 65–84 Strong, 85+ Interview-ready. While any critical finding is open, the label is capped at **Solid** (`LABEL_CAP_WITH_CRITICAL`), whatever the score.
 
 An empty or fully-passing rule set scores 100. Duplicate rule ids and weights of 0 or less throw an error.
 

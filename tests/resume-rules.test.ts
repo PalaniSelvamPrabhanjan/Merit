@@ -167,3 +167,15 @@ describe("rule details", () => {
     expect(review.nextBestAction?.severity).toBe("critical");
   });
 });
+
+describe("no duplicate findings for one problem", () => {
+  it("leaves 'Responsible for…' to the filler rule and 'I …' to the pronoun rule", () => {
+    const resume = edit((r) => {
+      r.projects[0].bullets[0] = "Responsible for interviewing 12 students about week one.";
+      r.projects[0].bullets[1] = "I designed 14 colour-coded signs in Illustrator.";
+    });
+    expect(run(actionVerbRule, resume).findings).toEqual([]);
+    expect(run(fillerRule, resume).findings.map((f) => f.target)).toEqual(["projects[0].bullets[0]"]);
+    expect(run(pronounRule, resume).findings.map((f) => f.target)).toEqual(["projects[0].bullets[1]"]);
+  });
+});

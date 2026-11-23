@@ -1,4 +1,4 @@
-import { labelForScore, SEVERITY_ORDER } from "@/lib/advisor/config";
+import { labelForReview, SEVERITY_ORDER } from "@/lib/advisor/config";
 import type { Advisor, Finding, Review, Rule, StudentContext } from "@/lib/advisor/types";
 
 type RankedFinding = { finding: Finding; gain: number; order: number };
@@ -34,7 +34,8 @@ function validateRules<T>(rules: ReadonlyArray<Rule<T>>) {
  *
  * Ranking: findings are sorted by severity, then by the points fixing them would add
  * (rule weight × missing score, shared across that rule's failures), then rule order.
- * The first finding is the next best action.
+ * The first finding is the next best action. The label comes from the score, capped at
+ * "Solid" while any critical finding is open.
  */
 export function runRules<T>(rules: ReadonlyArray<Rule<T>>, input: T, ctx: StudentContext): Review {
   validateRules(rules);
@@ -95,7 +96,7 @@ export function runRules<T>(rules: ReadonlyArray<Rule<T>>, input: T, ctx: Studen
 
   return {
     score,
-    label: labelForScore(score),
+    label: labelForReview(score, findings.some((finding) => finding.severity === "critical")),
     categories,
     findings,
     nextBestAction: findings[0]

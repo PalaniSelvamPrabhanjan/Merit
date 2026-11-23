@@ -18,6 +18,19 @@ export const SEVERITY_ORDER: Record<Severity, number> = {
   polish: 2
 };
 
+/**
+ * While any critical finding is open, the label can't go above this, whatever the
+ * score: "Strong" with a missing essential would mislead the student.
+ */
+export const LABEL_CAP_WITH_CRITICAL: ScoreLabel = "Solid";
+
+const LABEL_RANK: Record<ScoreLabel, number> = { "Getting started": 0, Solid: 1, Strong: 2, "Interview-ready": 3 };
+
+export function labelForReview(score: number, hasCritical: boolean): ScoreLabel {
+  const label = labelForScore(score);
+  return hasCritical && LABEL_RANK[label] > LABEL_RANK[LABEL_CAP_WITH_CRITICAL] ? LABEL_CAP_WITH_CRITICAL : label;
+}
+
 export function labelForScore(score: number): ScoreLabel {
   const band = SCORE_LABEL_THRESHOLDS.find((threshold) => score >= threshold.min);
   return band ? band.label : "Getting started";

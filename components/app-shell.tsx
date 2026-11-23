@@ -21,6 +21,7 @@ export function AppShell({ children, userEmail, roleType }: AppShellProps) {
   const isSignedIn = Boolean(userEmail);
   const dashboardNavItems = [
     { href: "/profile", label: "Dashboard" },
+    ...(roleType === "recruiter" ? [] : [{ href: "/resume", label: "Resume" }]),
     { href: "/home", label: "Explore" },
     { href: "/people", label: "People" },
     { href: "/opportunities", label: "Opportunities" },

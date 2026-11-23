@@ -6,7 +6,15 @@ import type { ResumeData } from "@/lib/resume/types";
  */
 export type ResumeAutoFix =
   | { type: "use-passport-url" }
-  | { type: "replace-bullet"; section: "projects" | "experience"; entryIndex: number; bulletIndex: number; value: string }
+  | {
+      type: "replace-bullet";
+      section: "projects" | "experience";
+      entryIndex: number;
+      bulletIndex: number;
+      value: string;
+      /** Button text, e.g. "Remove “I”". */
+      label?: string;
+    }
   | { type: "remove-skills"; skills: string[] };
 
 export function isResumeAutoFix(value: unknown): value is ResumeAutoFix {
@@ -21,7 +29,7 @@ export function isResumeAutoFix(value: unknown): value is ResumeAutoFix {
 export function autoFixLabel(fix: ResumeAutoFix): string {
   if (fix.type === "use-passport-url") return "Add my Passport link";
   if (fix.type === "remove-skills") return fix.skills.length === 1 ? `Remove “${fix.skills[0]}”` : `Remove ${fix.skills.length} soft skills`;
-  return "Apply fix";
+  return fix.label ?? "Use suggested rewrite";
 }
 
 /** Pure: returns a new resume with the fix applied. */
