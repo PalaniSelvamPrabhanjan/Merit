@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: Passport builder first run</title>
+<style>
+  /* Wireframe-level mockup using Merit's live palette. Text colour #5f5546 replaces #7b705f to pass AA. */
+  :root { --bg:#f4f0e8; --panel:#eee8dd; --line:#d7cebd; --ink:#16130f; --muted:#5f5546; --sun:#f3c945; --sun-ink:#8a6a00; --ok:#2f6b3a; --warn:#9a4b00; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color:inherit; }
+  header { display:flex; align-items:center; gap:20px; padding:14px 24px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .logo { font:italic 600 28px Georgia, serif; color:var(--sun-ink); }
+  nav { display:flex; gap:16px; flex-wrap:wrap; font-size:14px; }
+  nav a { text-decoration:none; color:var(--muted); }
+  nav a[aria-current] { color:var(--ink); font-weight:600; }
+  .bell { margin-left:auto; position:relative; }
+  .bell b { position:absolute; top:-6px; right:-10px; background:var(--ink); color:#fff; border-radius:9px; font-size:11px; padding:0 5px; }
+  main { max-width:1180px; margin:0 auto; padding:24px 16px 60px; }
+  .step-label { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:36px 0 10px; }
+  h1, h2, h3 { font-family:Georgia, serif; font-weight:500; margin:0 0 8px; }
+  .card { background:var(--panel); border:1px solid var(--line); padding:20px; }
+  .btn { display:inline-block; background:var(--sun); border:1px solid #d9a900; padding:10px 18px; font-weight:600; text-decoration:none; color:var(--ink); }
+  .btn.secondary { background:transparent; border-color:var(--ink); }
+  .grid { display:grid; gap:20px; }
+  @media (min-width:900px) { .two { grid-template-columns: 2fr 1fr; } .three { grid-template-columns: repeat(3,1fr); } }
+  .welcome { text-align:center; padding:40px 20px; }
+  .welcome ul { list-style:none; padding:0; display:grid; gap:12px; max-width:760px; margin:24px auto; text-align:left; }
+  @media (min-width:900px){ .welcome ul { grid-template-columns:repeat(3,1fr);} }
+  .welcome li { border:1px solid var(--line); background:#faf7f1; padding:14px; }
+  .check { list-style:none; padding:0; margin:12px 0 0; }
+  .check li { display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-top:1px solid var(--line); }
+  .dot { flex:0 0 22px; height:22px; border-radius:50%; border:2px solid var(--muted); display:grid; place-items:center; font-size:12px; }
+  .done .dot { background:var(--ok); border-color:var(--ok); color:#fff; }
+  .done span.t { text-decoration:line-through; color:var(--muted); }
+  .bar { height:10px; background:#ddd3c1; } .bar i { display:block; height:100%; background:var(--ink); }
+  .score { display:flex; align-items:baseline; gap:10px; }
+  .score strong { font:600 44px Georgia, serif; }
+  .pill { display:inline-block; border:1px solid var(--ink); padding:2px 8px; font-size:12px; }
+  .nba { border-left:4px solid var(--sun); background:#fffaf0; padding:14px; margin:14px 0; }
+  .cat { display:grid; grid-template-columns: 110px 1fr 34px; gap:8px; align-items:center; font-size:13px; margin:6px 0; }
+  .empty { border:2px dashed var(--line); padding:24px; text-align:center; }
+  .example { display:grid; grid-template-columns:120px 1fr; gap:12px; text-align:left; background:#faf7f1; border:1px solid var(--line); padding:12px; margin:16px auto; max-width:520px; }
+  .thumb { background:repeating-linear-gradient(45deg,#e7dcc6,#e7dcc6 8px,#efe6d4 8px,#efe6d4 16px); min-height:80px; }
+  .tip { position:relative; background:var(--ink); color:#fff; padding:12px 14px; max-width:320px; font-size:14px; }
+  .tip::before { content:""; position:absolute; top:-8px; left:24px; border:8px solid transparent; border-top:0; border-bottom-color:var(--ink); }
+  .tip button { background:none; border:1px solid #fff; color:#fff; padding:2px 8px; margin-top:8px; }
+  label { display:block; font-weight:600; margin:14px 0 4px; }
+  .hint { color:var(--muted); font-size:13px; margin:0 0 6px; }
+  textarea, input { width:100%; font:inherit; padding:10px; border:1px solid var(--line); background:#fff; }
+  .ws { display:grid; gap:8px; margin-top:8px; font-size:13px; }
+  @media (min-width:600px){ .ws { grid-template-columns:1fr 1fr; } }
+  .weak { border-left:3px solid var(--warn); padding:6px 10px; background:#fff3e6; }
+  .strong { border-left:3px solid var(--ok); padding:6px 10px; background:#eef6ee; }
+  .count { text-align:right; font-size:12px; color:var(--muted); }
+  .flag { color:var(--warn); font-size:13px; margin-top:4px; }
+  .note { font-size:13px; color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">Merit</span>
+  <nav aria-label="Main">
+    <a href="#" aria-current="page">Passport</a><a href="#">Resume</a><a href="#">Opportunities</a><a href="#">Explore</a>
+  </nav>
+  <span class="bell" aria-label="Notifications, 2 unread">🔔<b>2</b></span>
+</header>
+<main>
+
+<p class="step-label">Step A · First login: welcome (shown once, replayable from Help)</p>
+<section class="card welcome" aria-labelledby="w">
+  <h1 id="w">Welcome to Merit, Avery</h1>
+  <p>Your <strong>Merit Passport</strong> is one link that shows employers what you have actually made. It sits next to your resume, not instead of it.</p>
+  <ul>
+    <li><strong>1. Your strongest 3–6 projects</strong><br><span class="note">Employers look at the first one most. Lead with your best.</span></li>
+    <li><strong>2. How you worked, not just the final shot</strong><br><span class="note">Sketches, iterations and wireframes show your thinking.</span></li>
+    <li><strong>3. What happened</strong><br><span class="note">Feedback, a result, an award, or that it shipped.</span></li>
+  </ul>
+  <a class="btn" href="#">Set up my Passport (about 10 min)</a>
+  <p class="note" style="margin-top:12px"><a href="#">Look at an example Passport first</a> · <a href="#">Skip for now</a></p>
+</section>
+
+<p class="step-label">Step B · Passport home: checklist + strength panel</p>
+<div class="grid two">
+  <section class="card" aria-labelledby="gs">
+    <h2 id="gs">Getting started <span class="pill">2 of 5 done</span></h2>
+    <div class="bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" aria-label="Setup progress"><i style="width:40%"></i></div>
+    <ul class="check">
+      <li class="done"><span class="dot" aria-hidden="true">✓</span><span class="t">Add your name and course</span></li>
+      <li class="done"><span class="dot" aria-hidden="true">✓</span><span class="t">Write a 2–3 sentence bio</span></li>
+      <li><span class="dot" aria-hidden="true"></span><div><strong>Add your first project</strong><br><span class="note">Pick something you are proud of. You can add more later.</span><br><a class="btn" style="margin-top:8px" href="#">Add project</a></div></li>
+      <li><span class="dot" aria-hidden="true"></span><span>Show your process: 3+ images on a project</span></li>
+      <li><span class="dot" aria-hidden="true"></span><span>Attach your resume, then publish your Passport</span></li>
+    </ul>
+
+    <h3 style="margin-top:28px">Projects</h3>
+    <div class="empty">
+      <p><strong>No projects yet.</strong> A project is one piece of work told as a short story: the problem, your role, how you worked, and what happened.</p>
+      <div class="example" aria-label="Example project card">
+        <div class="thumb" role="img" aria-label="Example cover image"></div>
+        <div><strong>Campus wayfinding redesign</strong><br><span class="note">UX designer · Figma, Illustrator · 6 weeks</span><br>Cut average route-finding time for new students from 9 to 4 minutes in usability tests.</div>
+      </div>
+      <a class="btn" href="#">Add your first project</a>
+    </div>
+    <div class="tip" role="note" style="margin-top:18px">
+      <strong>Tip:</strong> The first project on your Passport is the one employers see. Use “Move up” to reorder.
+      <br><button type="button">Got it</button>
+    </div>
+  </section>
+
+  <aside class="card" aria-labelledby="ps">
+    <h2 id="ps">Passport strength</h2>
+    <div class="score"><strong>34</strong><span>/ 100</span> <span class="pill">Getting started</span></div>
+    <p class="note">Everyone starts here. Most students reach “Solid” after their first two projects.</p>
+    <div class="nba"><strong>Next best step</strong><br>Add your first project. This is worth up to +30 points.<br><a href="#">Add project →</a></div>
+    <div class="cat"><span>Profile</span><div class="bar"><i style="width:80%"></i></div><span>80</span></div>
+    <div class="cat"><span>Projects</span><div class="bar"><i style="width:0%"></i></div><span>0</span></div>
+    <div class="cat"><span>Process</span><div class="bar"><i style="width:0%"></i></div><span>0</span></div>
+    <div class="cat"><span>Outcomes</span><div class="bar"><i style="width:0%"></i></div><span>0</span></div>
+    <div class="cat"><span>Contact & CV</span><div class="bar"><i style="width:50%"></i></div><span>50</span></div>
+    <p style="margin-top:16px"><a class="btn secondary" href="#">Preview as employer</a></p>
+  </aside>
+</div>
+
+<p class="step-label">Step C · Guided project editor: problem → role → process → outcome</p>
+<div class="grid two">
+  <section class="card" aria-labelledby="pe">
+    <h2 id="pe">Campus wayfinding redesign</h2>
+    <p class="note">Step 2 of 5 · <strong>The problem</strong> · Cover → <u>Problem</u> → Your role → Process → Outcome</p>
+    <label for="prob">What problem were you solving, and for whom?</label>
+    <p class="hint">One or two sentences. Name the people and what was hard for them.</p>
+    <textarea id="prob" rows="3">Students get lost.</textarea>
+    <div class="count">18 / 280 · aim for 80–200</div>
+    <p class="flag">⚠ Too vague: who are the students, and what does getting lost cost them?</p>
+    <div class="ws">
+      <div class="weak"><strong>Weak</strong><br>“Students get lost.”</div>
+      <div class="strong"><strong>Strong</strong><br>“First-year students at our 12-building campus missed classes in week one because signs used building codes nobody knew.”</div>
+    </div>
+    <p style="margin-top:16px"><a class="btn secondary" href="#">Back</a> <a class="btn" href="#">Next: Your role</a></p>
+  </section>
+  <aside class="card" aria-labelledby="pc">
+    <h2 id="pc">This project</h2>
+    <ul class="check">
+      <li class="done"><span class="dot" aria-hidden="true">✓</span><span class="t">Cover image</span></li>
+      <li><span class="dot" aria-hidden="true">!</span><span>Problem is specific</span></li>
+      <li><span class="dot" aria-hidden="true"></span><span>Your role and tools</span></li>
+      <li><span class="dot" aria-hidden="true"></span><span>3+ process images (1 of 3)</span></li>
+      <li><span class="dot" aria-hidden="true"></span><span>Outcome with a result</span></li>
+      <li><span class="dot" aria-hidden="true"></span><span>Alt text on every image</span></li>
+    </ul>
+  </aside>
+</div>
+</main>
+</body>
+</html>

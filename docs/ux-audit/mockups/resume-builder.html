@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: Resume builder</title>
+<style>
+  :root { --bg:#f4f0e8; --panel:#eee8dd; --line:#d7cebd; --ink:#16130f; --muted:#5f5546; --sun:#f3c945; --sun-ink:#8a6a00; --ok:#2f6b3a; --warn:#9a4b00; --crit:#a3261b; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { display:flex; align-items:center; gap:20px; padding:14px 24px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .logo { font:italic 600 28px Georgia, serif; color:var(--sun-ink); }
+  nav { display:flex; gap:16px; flex-wrap:wrap; font-size:14px; }
+  nav a { text-decoration:none; color:var(--muted); } nav a[aria-current] { color:var(--ink); font-weight:600; }
+  main { max-width:1400px; margin:0 auto; padding:20px 16px 60px; }
+  h1,h2,h3 { font-family:Georgia, serif; font-weight:500; margin:0 0 8px; }
+  .steps { display:flex; gap:6px; flex-wrap:wrap; list-style:none; padding:0; margin:12px 0 20px; font-size:13px; }
+  .steps li { border:1px solid var(--line); padding:6px 10px; background:#faf7f1; }
+  .steps li[aria-current] { background:var(--ink); color:#fff; }
+  .steps li.done::before { content:"✓ "; color:var(--ok); }
+  .layout { display:grid; gap:20px; }
+  @media (min-width:1100px) { .layout { grid-template-columns: 1.05fr 1fr 340px; } }
+  .card { background:var(--panel); border:1px solid var(--line); padding:20px; }
+  .tabs { display:flex; gap:0; margin-bottom:12px; }
+  .tabs button { flex:1; padding:10px; border:1px solid var(--ink); background:transparent; font:inherit; }
+  .tabs button[aria-selected=true] { background:var(--ink); color:#fff; }
+  @media (min-width:1100px) { .tabs { display:none; } }
+  label { display:block; font-weight:600; margin:14px 0 4px; }
+  .hint { color:var(--muted); font-size:13px; margin:0 0 6px; }
+  input, textarea { width:100%; font:inherit; padding:10px; border:1px solid var(--line); background:#fff; }
+  .prefill { font-size:12px; color:var(--ok); }
+  .hl { outline:3px solid var(--warn); outline-offset:1px; }
+  .ws { display:grid; gap:8px; margin-top:8px; font-size:13px; }
+  .weak { border-left:3px solid var(--warn); padding:6px 10px; background:#fff3e6; }
+  .strong { border-left:3px solid var(--ok); padding:6px 10px; background:#eef6ee; }
+  .btn { display:inline-block; background:var(--sun); border:1px solid #d9a900; padding:10px 18px; font-weight:600; text-decoration:none; color:var(--ink); font:inherit; }
+  .btn.secondary { background:transparent; border-color:var(--ink); }
+  .paper { background:#fff; color:#111; padding:36px 40px; font:13px/1.45 Arial, Helvetica, sans-serif; box-shadow:0 1px 6px rgba(0,0,0,.12); }
+  .paper h3 { font:700 12px Arial, sans-serif; letter-spacing:.08em; text-transform:uppercase; border-bottom:1px solid #111; padding-bottom:2px; margin:14px 0 6px; }
+  .paper .name { font:700 22px Arial, sans-serif; margin:0; }
+  .paper ul { margin:4px 0 0 18px; padding:0; }
+  .paper .row { display:flex; justify-content:space-between; gap:8px; }
+  .paper mark { background:#ffe7c2; }
+  .score { display:flex; align-items:baseline; gap:10px; } .score strong { font:600 44px Georgia, serif; }
+  .pill { display:inline-block; border:1px solid var(--ink); padding:2px 8px; font-size:12px; }
+  .bar { height:10px; background:#ddd3c1; } .bar i { display:block; height:100%; background:var(--ink); }
+  .cat { display:grid; grid-template-columns: 100px 1fr 30px; gap:8px; align-items:center; font-size:13px; margin:6px 0; }
+  .nba { border-left:4px solid var(--sun); background:#fffaf0; padding:14px; margin:14px 0; }
+  .f { border-top:1px solid var(--line); padding:10px 0; font-size:14px; }
+  .sev { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+  .sev.crit { color:var(--crit); } .sev.imp { color:var(--warn); } .sev.pol { color:var(--muted); }
+  .fix { font-size:13px; padding:4px 10px; border:1px solid var(--ink); background:#fff; margin-top:6px; }
+  details summary { cursor:pointer; font-weight:600; margin-top:12px; }
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">Merit</span>
+  <nav aria-label="Main"><a href="#">Passport</a><a href="#" aria-current="page">Resume</a><a href="#">Opportunities</a><a href="#">Explore</a></nav>
+</header>
+<main>
+  <h1>Resume builder</h1>
+  <p class="hint">We filled in what Merit already knows from your Passport. We only ask for what is missing. Changes save automatically.</p>
+  <ol class="steps" aria-label="Resume sections">
+    <li class="done">Basics</li><li class="done">Education</li><li aria-current="step">Projects</li><li>Experience</li><li>Skills</li><li>Extras</li><li>Review & download</li>
+  </ol>
+
+  <div class="tabs" role="tablist" aria-label="Mobile view">
+    <button role="tab" aria-selected="true">Edit</button><button role="tab" aria-selected="false">Preview</button><button role="tab" aria-selected="false">Feedback (5)</button>
+  </div>
+
+  <div class="layout">
+    <section class="card" aria-labelledby="ed">
+      <h2 id="ed">Projects</h2>
+      <p class="prefill">✓ Imported from your Passport: “Campus wayfinding redesign”</p>
+      <label for="t">Project title</label>
+      <input id="t" value="Campus wayfinding redesign">
+      <label for="b2">Bullet 2</label>
+      <p class="hint">Start with an action verb. Say what you did, with which tool, and what changed.</p>
+      <textarea id="b2" rows="2" class="hl" aria-describedby="b2e">Responsible for making the signs in Figma.</textarea>
+      <p id="b2e" class="sev imp" style="margin:6px 0 0">Improve: starts with filler (“Responsible for”) and has no result</p>
+      <div class="ws">
+        <div class="weak"><strong>Weak</strong><br>“Responsible for making the signs in Figma.”</div>
+        <div class="strong"><strong>Strong</strong><br>“Designed 14 colour-coded signs in Figma, cutting route-finding time from 9 to 4 minutes in tests with 12 students.”</div>
+      </div>
+      <p style="margin-top:16px"><button class="btn secondary">Back: Education</button> <button class="btn">Next: Experience</button></p>
+    </section>
+
+    <section aria-label="Resume preview">
+      <div class="paper">
+        <p class="name">Avery Tan</p>
+        <p style="margin:2px 0 0">avery@example.com · linkedin.com/in/averytan · meritsg.com/passport/avery-tan</p>
+        <h3>Education</h3>
+        <div class="row"><strong>Diploma in User Experience Design, Example Polytechnic</strong><span>Expected May 2028</span></div>
+        <h3>Projects</h3>
+        <div class="row"><strong>Campus wayfinding redesign</strong><span>Jan 2026 – Mar 2026</span></div>
+        <ul>
+          <li>Interviewed 12 first-year students to map where and why they got lost in week one.</li>
+          <li><mark>Responsible for making the signs in Figma.</mark></li>
+          <li>Tested 3 prototype iterations; final design cut route-finding time by 55%.</li>
+        </ul>
+        <h3>Skills</h3>
+        <p style="margin:0">Figma, Adobe Illustrator, Photoshop, user interviews, usability testing</p>
+      </div>
+      <p class="hint" style="margin-top:10px">Single-column, real selectable text, standard headings: safe for ATS software.</p>
+      <p><button class="btn">Download PDF</button></p>
+    </section>
+
+    <aside class="card" aria-labelledby="rs">
+      <h2 id="rs">Resume strength</h2>
+      <div class="score"><strong>68</strong><span>/ 100</span> <span class="pill">Solid</span></div>
+      <div class="nba"><strong>Next best step</strong><br>Add a second project or experience entry. Internship resumes need at least two.</div>
+      <div class="cat"><span>Complete</span><div class="bar"><i style="width:75%"></i></div><span>75</span></div>
+      <div class="cat"><span>Bullets</span><div class="bar"><i style="width:60%"></i></div><span>60</span></div>
+      <div class="cat"><span>Evidence</span><div class="bar"><i style="width:80%"></i></div><span>80</span></div>
+      <div class="cat"><span>Layout</span><div class="bar"><i style="width:100%"></i></div><span>100</span></div>
+      <details open><summary>Critical (1)</summary>
+        <div class="f"><span class="sev crit">Critical</span><br>Only 1 project or experience entry. Add one more.</div>
+      </details>
+      <details open><summary>Improve (3)</summary>
+        <div class="f"><span class="sev imp">Improve</span><br>Projects › bullet 2 starts with “Responsible for”. Lead with a verb such as “Designed”.<br><button class="fix">Show me where</button></div>
+        <div class="f"><span class="sev imp">Improve</span><br>Projects › bullet 2 has no number or result.</div>
+        <div class="f"><span class="sev imp">Improve</span><br>Figma is in Skills but only one bullet shows how you used it.</div>
+      </details>
+      <details><summary>Polish (1)</summary>
+        <div class="f"><span class="sev pol">Polish</span><br>Dates mix “Jan 2026” and “01/2026”.<br><button class="fix">Fix all dates</button></div>
+      </details>
+    </aside>
+  </div>
+</main>
+</body>
+</html>
