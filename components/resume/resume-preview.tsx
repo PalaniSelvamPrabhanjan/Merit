@@ -71,7 +71,7 @@ export function ResumePreview({
                       <li key={bullet.target}>
                         <button
                           className={cn(
-                            "text-left",
+                            "inline text-left",
                             flagged(bullet.target) && "underline decoration-[#b8742a] decoration-wavy decoration-1 underline-offset-2",
                             highlightedTarget === bullet.target && "bg-[#fff2bf]"
                           )}

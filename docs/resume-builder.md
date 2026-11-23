@@ -91,3 +91,52 @@ Trade-off: the on-screen preview is HTML styled to match the PDF, not the PDF it
   - Skills, merged across all projects.
 - **Parsing the uploaded resume file is skipped.** There is no upload flow in the live UI (audit C2), and parsing PDF and Word files reliably needs a server-side parser. Worth revisiting with the AI advisor.
 - **Education is stored inside the resume for now.** Adding it to the profile is open question 6 in the audit.
+
+## 6. What was built
+
+| Piece | Where |
+|---|---|
+| Page | `app/resume/page.tsx` (signed-in only; loads the student context and the saved draft, or prefills a new one) |
+| Builder UI | `components/resume/`: `resume-builder.tsx` (state, autosave, download), `resume-steps.tsx`, `resume-fields.tsx`, `resume-preview.tsx`, `resume-feedback.tsx`, `resume-pdf.tsx` |
+| Data and logic | `lib/resume/`: `types`, `model` (prefill, normalise), `format`, `document` (shared render model), `length` (one-page estimate), `autofix`, `targets`, `field-help` (field copy), `storage` (save), `load` (server), `pdf` (client render) |
+| Rules | `lib/advisor/rules/resume/` (21 rules), word lists in `lib/advisor/data/` |
+| Migration | `supabase/migrations/20261123000001_resumes.sql` |
+| Dev preview | `/dev/resume-preview` (`?state=empty`, `?state=done`) uses a fictional student and is a 404 in production |
+| Navigation | "Resume" added to the signed-in nav for candidates |
+
+How it behaves:
+- **Starts where work is needed.** It opens on the first step with a must-fix item. Each step shows its open issue count, or a tick when done.
+- **Live feedback.** Rules re-run 250 ms after typing stops. Each field shows its own findings, linked to the input with `aria-describedby`. The preview marks flagged bullets with a wavy underline, and clicking one jumps to its field.
+- **Feedback panel.**
+  - Score and label (capped at "Solid" while any must-fix is open).
+  - Category bars.
+  - The next best step, with its example.
+  - Findings grouped as Must fix, Improve and Polish.
+  - "Show me where" opens the right step and focuses the field.
+- **One-click fixes:** add my Passport link, remove a leading "I", remove soft skills from Skills.
+- **Layout.** Three columns on desktop (form, preview, feedback); Edit / Preview / Feedback tabs below 1280px.
+- **Saving.** Autosaves to `resumes` about 1 second after the last change. If that table isn't deployed yet, it saves to this browser and says "Saved on this device only".
+- **Download.** Renders the PDF in the browser and saves it as `First-Last-Resume.pdf`. It also stores a snapshot in `resume_versions`.
+
+## 7. Verification
+
+- **Unit tests:** 21 rules, each with a passing and a failing case. Plus prefill and normalisation, targets, autofixes, de-duplication, and the label cap. `npm test` runs 165 tests, all passing.
+- **PDF:** `tests/resume-pdf.test.tsx` renders the sample resume with react-pdf, extracts the text with pdfjs, and asserts one page and the reading order: name → contact → Education → Projects → bullets → Experience → Skills → Additional.
+  - Checked by hand with `pdftotext`, which surfaced two ATS bugs, both fixed: letter-spaced headings extracted as "EXPE RIENC E", and auto-hyphenation split URLs.
+  - Sample: [`resume-builder/sample-resume.pdf`](resume-builder/sample-resume.pdf).
+- **Browser:** Playwright on `/dev/resume-preview` at 1440px and 390px, in empty, draft and finished states.
+  - axe (WCAG 2.1 AA): **0 violations** in all six.
+  - No horizontal scroll at 390px. No console errors.
+  - A scripted flow (Fix this now → add school → one-click fixes → Show me where → Download PDF) raised the score from 70 to 80. The downloaded PDF's text was checked with `pdftotext`.
+- **Screenshots:** [`resume-builder/screens/`](resume-builder/screens/).
+- **Not verified yet:**
+  - The signed-in `/resume` page against a real database (no Supabase keys in this environment).
+  - Saving to the `resumes` table (the migration is not applied).
+
+## 8. Open items
+
+1. Apply `20261123000001_resumes.sql` to Supabase. Until then, drafts save per browser only.
+2. Education is stored in the resume. Decide whether it also belongs on the profile and the public Passport (audit H6, question 6).
+3. Parsing an uploaded resume file is not built (see section 5).
+4. A second template, and a Word (.docx) export as NN/g suggests, are not built.
+5. `/resume` returns HTTP 200 with a client-side redirect when signed out. This is the same `app/loading.tsx` streaming behaviour noted in the audit (M8).
