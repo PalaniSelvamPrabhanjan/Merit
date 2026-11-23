@@ -81,7 +81,42 @@ const VERB_PAIRS: ReadonlyArray<readonly [past: string, present: string]> = [
   ["won", "win"],
   ["achieved", "achieve"],
   ["grew", "grow"],
-  ["secured", "secure"]
+  ["secured", "secure"],
+  // Everyday doing verbs students use
+  ["ran", "run"],
+  ["prepared", "prepare"],
+  ["conducted", "conduct"],
+  ["curated", "curate"],
+  ["drafted", "draft"],
+  ["refined", "refine"],
+  ["assembled", "assemble"],
+  ["sourced", "source"],
+  ["generated", "generate"],
+  ["hosted", "host"],
+  ["revamped", "revamp"],
+  ["restructured", "restructure"],
+  ["translated", "translate"],
+  ["captured", "capture"],
+  ["fixed", "fix"],
+  ["resolved", "resolve"],
+  ["trained", "train"],
+  ["tutored", "tutor"],
+  ["advised", "advise"],
+  ["handled", "handle"],
+  ["served", "serve"],
+  ["installed", "install"],
+  ["configured", "configure"],
+  ["measured", "measure"],
+  ["calculated", "calculate"],
+  ["recorded", "record"],
+  ["printed", "print"],
+  ["exhibited", "exhibit"],
+  ["recruited", "recruit"],
+  ["onboarded", "onboard"],
+  ["scheduled", "schedule"],
+  ["promoted", "promote"],
+  ["marketed", "market"],
+  ["sold", "sell"]
 ];
 
 /** Strong action verbs, past tense (for finished roles and projects). */
@@ -153,4 +188,31 @@ export function leadingActionVerb(bullet: string): string | null {
     ?.toLowerCase()
     .replace(/[^a-z]/g, "");
   return firstWord && ALL_VERB_FORMS.has(firstWord) ? firstWord : null;
+}
+
+const PAST_FORMS = new Set<string>(ACTION_VERBS);
+const PRESENT_FORMS = new Set<string>(ACTION_VERBS_PRESENT);
+
+/** "past", "present" or null for a known action verb (as returned by leadingActionVerb). */
+export function verbTense(verb: string): "past" | "present" | null {
+  const normalized = verb.toLowerCase();
+  if (PAST_FORMS.has(normalized) && !PRESENT_FORMS.has(normalized)) {
+    return "past";
+  }
+  if (PRESENT_FORMS.has(normalized) && !PAST_FORMS.has(normalized)) {
+    return "present";
+  }
+  return null;
+}
+
+/** Present-tense form of a known past-tense verb ("designed" -> "design"), or null. */
+export function presentFormOf(pastVerb: string): string | null {
+  const pair = VERB_PAIRS.find(([past]) => past === pastVerb.toLowerCase());
+  return pair ? pair[1] : null;
+}
+
+/** Past-tense form of a known present-tense verb ("design" -> "designed"), or null. */
+export function pastFormOf(presentVerb: string): string | null {
+  const pair = VERB_PAIRS.find(([, present]) => present === presentVerb.toLowerCase());
+  return pair ? pair[0] : null;
 }
