@@ -105,6 +105,9 @@ function projectEntry(project: StudentProject, appUrl: string): ResumeProject {
   return {
     ...emptyProject(),
     title: project.title,
+    role: project.role,
+    startDate: project.startedMonth,
+    endDate: project.finishedMonth,
     tools: [...project.skills],
     link: `${trimSlash(appUrl)}/projects/${project.projectId}`,
     sourceProjectId: project.projectId,

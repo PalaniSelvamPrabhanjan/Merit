@@ -37,6 +37,10 @@ function toStudentProject(project: ProjectCardData): StudentProject {
     problemSolved: project.problemSolved,
     whatWasBuilt: project.whatWasBuilt,
     impact: project.impact,
+    role: project.role,
+    startedMonth: project.startedMonth,
+    finishedMonth: project.finishedMonth,
+    coverAltText: project.coverAltText,
     projectType: project.projectType,
     category: project.category,
     coverImageUrl: project.coverImageUrl,
@@ -45,7 +49,8 @@ function toStudentProject(project: ProjectCardData): StudentProject {
     artifacts: project.artifacts.map((artifact) => ({
       url: artifact.url,
       type: artifact.type,
-      label: artifact.label
+      label: artifact.label,
+      altText: artifact.altText
     })),
     createdAt: project.createdAt
   };

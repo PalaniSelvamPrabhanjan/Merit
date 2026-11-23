@@ -1,13 +1,14 @@
 -- Merit: apply in the Supabase SQL editor (Dashboard → SQL Editor → New query → paste → Run).
--- Combines two migrations from supabase/migrations/. Safe to run more than once:
+-- Combines the migrations below from supabase/migrations/. Safe to run more than once:
 -- everything uses IF NOT EXISTS / DROP ... IF EXISTS. Adds tables and columns only;
 -- nothing existing is changed or deleted.
---   1. 20261123000001_resumes.sql            resume builder drafts + download history
---   2. 20261123000002_profile_education.sql  education on the profile
+--   1. 20261123000001_resumes.sql              resume builder drafts + download history
+--   2. 20261123000002_profile_education.sql    education on the profile
+--   3. 20261123000003_portfolio_coaching.sql   project case-study fields, image alt text, onboarding state
 
 begin;
 
--- ===== 1. 20261123000001_resumes.sql =====
+-- ===== 20261123000001_resumes.sql =====
 -- Stage 3: structured resumes.
 -- resumes: one current draft per user (autosaved).
 -- resume_versions: a snapshot each time the student downloads a PDF.
@@ -76,7 +77,7 @@ for insert with check (
   )
 );
 
--- ===== 2. 20261123000002_profile_education.sql =====
+-- ===== 20261123000002_profile_education.sql =====
 -- Education on the profile (decision 2, option B).
 -- One current course per student. The resume builder prefills from these columns,
 -- matching (Stage 5) reads course and year, and the public Passport shows one line.
@@ -109,7 +110,58 @@ check (education_year_of_study is null or education_year_of_study between 1 and 
 -- Existing RLS policies on candidate_profiles already cover these columns
 -- (public read, owner insert/update).
 
+-- ===== 20261123000003_portfolio_coaching.sql =====
+-- Stage 4: portfolio coaching.
+-- Case-study fields on projects (problem -> role -> process -> outcome), image alt text,
+-- and per-user onboarding state (welcome seen, tips dismissed).
+
+alter table public.projects
+add column if not exists role text,
+add column if not exists started_month text,
+add column if not exists finished_month text,
+add column if not exists cover_alt_text text;
+
+alter table public.projects
+drop constraint if exists projects_case_study_months_format;
+
+alter table public.projects
+add constraint projects_case_study_months_format
+check (
+  (started_month is null or started_month ~ '^\d{4}-(0[1-9]|1[0-2])$')
+  and (finished_month is null or finished_month ~ '^\d{4}-(0[1-9]|1[0-2])$')
+);
+
+alter table public.artifacts
+add column if not exists alt_text text;
+
+create table if not exists public.user_onboarding (
+  user_id uuid primary key references public.users(user_id) on delete cascade,
+  welcome_completed_at timestamptz,
+  dismissed_tips text[] not null default '{}'::text[],
+  checklist_hidden boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+
+drop trigger if exists user_onboarding_updated_at on public.user_onboarding;
+create trigger user_onboarding_updated_at
+before update on public.user_onboarding
+for each row execute procedure public.touch_updated_at();
+
+alter table public.user_onboarding enable row level security;
+
+drop policy if exists user_onboarding_select_own on public.user_onboarding;
+create policy user_onboarding_select_own on public.user_onboarding
+for select using (auth.uid() = user_id);
+
+drop policy if exists user_onboarding_insert_own on public.user_onboarding;
+create policy user_onboarding_insert_own on public.user_onboarding
+for insert with check (auth.uid() = user_id);
+
+drop policy if exists user_onboarding_update_own on public.user_onboarding;
+create policy user_onboarding_update_own on public.user_onboarding
+for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
 commit;
 
--- Supabase caches the schema for its API; reload it so the app sees the new tables now.
+-- Supabase caches the schema for its API; reload it so the app sees the changes now.
 notify pgrst, 'reload schema';

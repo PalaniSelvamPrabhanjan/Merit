@@ -91,10 +91,11 @@ Apply:
 `supabase/migrations/202606160001_analytics_events_and_claim_public_tokens.sql`
 `supabase/migrations/20261123000001_resumes.sql`
 `supabase/migrations/20261123000002_profile_education.sql`
+`supabase/migrations/20261123000003_portfolio_coaching.sql`
 
 ### Pending for production (Nov 2026)
-The resume builder and profile education need two new migrations. Paste
-`supabase/apply/2026-11-23_resume-and-education.sql` into the Supabase SQL editor and run it.
+The resume builder, profile education and portfolio coaching need three new migrations. Paste
+`supabase/apply/2026-11-23_pending-migrations.sql` into the Supabase SQL editor and run it.
 It only adds tables and columns, is safe to run more than once, and was tested against
 PostgreSQL 16 after all earlier migrations (including row-level security: students can only
 see their own resumes; education is public like the rest of the Passport). Until it is applied,

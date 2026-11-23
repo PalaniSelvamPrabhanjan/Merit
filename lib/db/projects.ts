@@ -8,6 +8,7 @@ import {
 import { rankProjectsForDiscovery, type FeedLabel } from "@/lib/projects/feed-ranking";
 import { isModerationEnabled } from "@/lib/runtime-config";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
+import { attachCaseStudy, fetchCaseStudyExtras } from "@/lib/db/case-study";
 import { EDUCATION_COLUMNS, educationFromRow, emptyProfileEducation, type ProfileEducation } from "@/lib/profile/education";
 
 type DbClient = Awaited<ReturnType<typeof createServerSupabaseClient>>;
@@ -17,6 +18,8 @@ export type ArtifactData = {
   type: string;
   previewUrl: string | null;
   label: string;
+  /** Image description for screen readers ("" until written or before the migration). */
+  altText: string;
 };
 
 export type ProjectEngagement = {
@@ -37,6 +40,11 @@ export type ProjectCardData = {
   coverImageUrl: string | null;
   isFeatured: boolean;
   impact: string | null;
+  /** Case-study fields (Stage 4). Empty strings until filled in or before the migration. */
+  role: string;
+  startedMonth: string;
+  finishedMonth: string;
+  coverAltText: string;
   createdAt: string;
   skills: string[];
   artifacts: ArtifactData[];
@@ -62,6 +70,12 @@ export type ProjectFormData = {
   coverImageUrl: string;
   isFeatured: boolean;
   impact: string;
+  role: string;
+  startedMonth: string;
+  finishedMonth: string;
+  coverAltText: string;
+  /** Alt text by artifact URL. */
+  artifactAltText: Record<string, string>;
   skills: string[];
   artifactLinks: string[];
 };
@@ -230,7 +244,8 @@ function mapProjectRows(rows: unknown[]): ProjectCardData[] {
           url,
           type: artifactType,
           previewUrl: safeNullableString(entry.preview_url) ?? buildArtifactPreviewUrl(url, artifactType),
-          label: getArtifactDisplayLabel(url)
+          label: getArtifactDisplayLabel(url),
+          altText: ""
         };
       })
       .filter((entry): entry is ArtifactData => Boolean(entry));
@@ -250,6 +265,10 @@ function mapProjectRows(rows: unknown[]): ProjectCardData[] {
       coverImageUrl: safeNullableString(project.cover_image_url),
       isFeatured: Boolean(project.is_featured),
       impact: safeNullableString(project.impact),
+      role: "",
+      startedMonth: "",
+      finishedMonth: "",
+      coverAltText: "",
       createdAt: safeString(project.created_at),
       skills,
       artifacts: artifactItems,
@@ -489,7 +508,7 @@ export async function fetchProjectsByUser(
   }
 
   const cards = await excludeHiddenProjects(supabase, mapProjectRows((data ?? []) as unknown[]));
-  return attachEngagement(supabase, cards);
+  return attachCaseStudy(supabase, await attachEngagement(supabase, cards));
 }
 
 export async function fetchProjectById(
@@ -509,7 +528,7 @@ export async function fetchProjectById(
   }
 
   const filteredCards = await excludeHiddenProjects(supabase, mapProjectRows([data as unknown]));
-  const [card] = await attachEngagement(supabase, filteredCards);
+  const [card] = await attachCaseStudy(supabase, await attachEngagement(supabase, filteredCards));
   if (!card) {
     return null;
   }
@@ -686,6 +705,8 @@ export async function fetchProjectFormData(
   const problemSolved = safeString(row.problem_solved);
   const hook = safeString(row.hook) || toOneLine(problemSolved, title);
 
+  const caseStudy = (await fetchCaseStudyExtras(supabase, [projectId])).get(projectId);
+
   return {
     projectId: safeString(row.project_id),
     title,
@@ -697,6 +718,11 @@ export async function fetchProjectFormData(
     coverImageUrl: safeString(row.cover_image_url),
     isFeatured: Boolean(row.is_featured),
     impact: safeString(row.impact),
+    role: caseStudy?.role ?? "",
+    startedMonth: caseStudy?.startedMonth ?? "",
+    finishedMonth: caseStudy?.finishedMonth ?? "",
+    coverAltText: caseStudy?.coverAltText ?? "",
+    artifactAltText: caseStudy?.artifactAltText ?? {},
     skills,
     artifactLinks
   };

@@ -99,6 +99,8 @@ export interface StudentProjectArtifact {
   url: string;
   type: string;
   label: string;
+  /** Image description ("" when missing). */
+  altText: string;
 }
 
 export interface StudentProject {
@@ -108,6 +110,11 @@ export interface StudentProject {
   problemSolved: string;
   whatWasBuilt: string;
   impact: string | null;
+  /** Case-study fields ("" when missing). */
+  role: string;
+  startedMonth: string;
+  finishedMonth: string;
+  coverAltText: string;
   projectType: "web" | "design" | "document" | "other";
   category: string;
   coverImageUrl: string | null;
