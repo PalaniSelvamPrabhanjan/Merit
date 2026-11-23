@@ -148,6 +148,12 @@ export type Database = {
           contact_email: string | null;
           portfolio_links: string[] | null;
           passport_slug: string | null;
+          education_institution?: string | null;
+          education_course?: string | null;
+          education_start_month?: string | null;
+          education_graduation_month?: string | null;
+          education_year_of_study?: number | null;
+          show_graduation_on_passport?: boolean;
           profile_completion_score: number;
           updated_at: string;
         },
@@ -158,6 +164,12 @@ export type Database = {
           contact_email?: string | null;
           portfolio_links?: string[] | null;
           passport_slug?: string | null;
+          education_institution?: string | null;
+          education_course?: string | null;
+          education_start_month?: string | null;
+          education_graduation_month?: string | null;
+          education_year_of_study?: number | null;
+          show_graduation_on_passport?: boolean;
           profile_completion_score?: number;
           updated_at?: string;
         },
@@ -168,6 +180,12 @@ export type Database = {
           contact_email?: string | null;
           portfolio_links?: string[] | null;
           passport_slug?: string | null;
+          education_institution?: string | null;
+          education_course?: string | null;
+          education_start_month?: string | null;
+          education_graduation_month?: string | null;
+          education_year_of_study?: number | null;
+          show_graduation_on_passport?: boolean;
           profile_completion_score?: number;
           updated_at?: string;
         }

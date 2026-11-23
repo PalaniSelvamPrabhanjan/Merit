@@ -1,7 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
-import type { Finding } from "@/lib/advisor/types";
+import { useState, type ReactNode } from "react";
+import type { Finding, StudentEducation } from "@/lib/advisor/types";
 import { FIELD_HELP } from "@/lib/resume/field-help";
 import { emptyEducation, emptyExperience, emptyExtra, emptyProject } from "@/lib/resume/model";
 import { findingsAt } from "@/lib/resume/targets";
@@ -15,6 +15,10 @@ export type StepProps = {
   highlightedTarget: string | null;
   /** Basics fields that were filled in from Merit and are unchanged. */
   prefilledBasics: ReadonlySet<string>;
+  /** Education currently on the student's profile, to offer syncing changes back. */
+  profileEducation?: StudentEducation | null;
+  /** Save the first education entry to the profile; omitted in demo mode. */
+  onSyncEducation?: (entry: ResumeEducation) => Promise<{ ok: boolean; message: string }>;
 };
 
 function StepIntro({ title, children }: { title: string; children: ReactNode }) {
@@ -100,7 +104,45 @@ export function BasicsStep({ resume, update, findings, highlightedTarget, prefil
   );
 }
 
-export function EducationStep({ resume, update, findings, highlightedTarget }: StepProps) {
+function differsFromProfile(entry: ResumeEducation, profile: StudentEducation | null | undefined): boolean {
+  if (!entry.institution.trim() || !entry.course.trim()) return false;
+  if (!profile) return true;
+  return (
+    entry.institution.trim() !== profile.institution ||
+    entry.course.trim() !== profile.course ||
+    entry.startDate !== (profile.startDate ?? "") ||
+    entry.endDate !== (profile.expectedGraduation ?? "")
+  );
+}
+
+function SyncEducation({ entry, onSync }: { entry: ResumeEducation; onSync: StepProps["onSyncEducation"] }) {
+  const [state, setState] = useState<{ busy: boolean; message: string | null; ok: boolean }>({ busy: false, message: null, ok: true });
+  if (!onSync) return null;
+  return (
+    <div className="space-y-1.5 border-t border-[#d7cebd] pt-3">
+      <p className="text-xs leading-5 text-[#4d4437]">This is different from the course on your Passport.</p>
+      <button
+        className="border border-[#16130f] px-3 py-1.5 text-sm font-medium text-[#16130f] hover:bg-[#ebe3d6] disabled:opacity-60"
+        disabled={state.busy}
+        onClick={async () => {
+          setState({ busy: true, message: null, ok: true });
+          const result = await onSync(entry);
+          setState({ busy: false, message: result.message, ok: result.ok });
+        }}
+        type="button"
+      >
+        {state.busy ? "Updating…" : "Also update my Passport"}
+      </button>
+      {state.message ? (
+        <p className={state.ok ? "text-xs text-[#2f6b3a]" : "text-xs text-[#a3261b]"} role="status">
+          {state.message}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+export function EducationStep({ resume, update, findings, highlightedTarget, profileEducation, onSyncEducation }: StepProps) {
   const setEntry = (index: number, patch: Partial<ResumeEducation>) =>
     update((current) => ({ ...current, education: replaceAt(current.education, index, patch) }));
 
@@ -131,6 +173,7 @@ export function EducationStep({ resume, update, findings, highlightedTarget }: S
               <MonthField {...field("endDate")} help={FIELD_HELP.eduEnd} onChange={(value) => setEntry(index, { endDate: value })} value={entry.endDate} />
             </div>
             <TextField {...field("details")} help={FIELD_HELP.eduDetails} onChange={(value) => setEntry(index, { details: value })} value={entry.details} />
+            {index === 0 && differsFromProfile(entry, profileEducation) ? <SyncEducation entry={entry} onSync={onSyncEducation} /> : null}
           </EntryCard>
         );
       })}

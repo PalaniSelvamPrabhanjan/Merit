@@ -8,6 +8,7 @@ import {
 import { rankProjectsForDiscovery, type FeedLabel } from "@/lib/projects/feed-ranking";
 import { isModerationEnabled } from "@/lib/runtime-config";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
+import { EDUCATION_COLUMNS, educationFromRow, emptyProfileEducation, type ProfileEducation } from "@/lib/profile/education";
 
 type DbClient = Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
@@ -75,6 +76,7 @@ export type PublicCandidateData = {
   targetRoles: string[];
   portfolioLinks: string[];
   passportSlug: string | null;
+  education: ProfileEducation;
   projects: ProjectCardData[];
 };
 
@@ -739,6 +741,16 @@ export async function fetchPublicCandidateData(
   const user = userResult.data as Record<string, unknown>;
   const profile = (profileResult.data ?? {}) as Record<string, unknown>;
 
+  // Separate query so a database without the education migration still loads the Passport.
+  const educationResult = await supabase
+    .from("candidate_profiles")
+    .select(EDUCATION_COLUMNS)
+    .eq("user_id", userId)
+    .maybeSingle();
+  const education = educationResult.error
+    ? emptyProfileEducation()
+    : educationFromRow(educationResult.data as Record<string, unknown> | null);
+
   return {
     userId: safeString(user.user_id),
     name: safeNullableString(user.name),
@@ -749,6 +761,7 @@ export async function fetchPublicCandidateData(
     targetRoles: safeStringArray(user.target_roles),
     portfolioLinks: safeStringArray(profile.portfolio_links),
     passportSlug: safeNullableString(profile.passport_slug),
+    education,
     projects
   };
 }

@@ -17,7 +17,8 @@ import {
   stepForTarget,
   type ResumeStepId
 } from "@/lib/resume/targets";
-import type { ResumeData } from "@/lib/resume/types";
+import type { ResumeData, ResumeEducation } from "@/lib/resume/types";
+import { saveEducationBasics } from "@/lib/profile/education-client";
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 import { cn } from "@/lib/utils";
 import { ResumeFeedback } from "@/components/resume/resume-feedback";
@@ -159,6 +160,25 @@ export function ResumeBuilder({
     [passportUrl]
   );
 
+  const [syncedEducation, setSyncedEducation] = useState<StudentContext["education"][number] | null>(context.education[0] ?? null);
+  const syncEducation = async (entry: ResumeEducation) => {
+    const result = await saveEducationBasics(createBrowserSupabaseClient(), userId, {
+      institution: entry.institution.trim(),
+      course: entry.course.trim(),
+      startMonth: entry.startDate,
+      graduationMonth: entry.endDate
+    });
+    if (!result.ok) return { ok: false, message: result.error };
+    setSyncedEducation({
+      institution: entry.institution.trim(),
+      course: entry.course.trim(),
+      startDate: entry.startDate || null,
+      expectedGraduation: entry.endDate || null,
+      yearOfStudy: syncedEducation?.yearOfStudy ?? null
+    });
+    return { ok: true, message: "Your Passport now shows this course." };
+  };
+
   const importProjects = () => {
     setResume((current) => addMissingPassportProjects(current, context, { appUrl }).resume);
     setStep("projects");
@@ -183,7 +203,15 @@ export function ResumeBuilder({
   const counts = openIssuesByStep(review.findings);
   const stepIndex = RESUME_STEPS.findIndex((item) => item.id === step);
   const StepComponent = step === "review" ? null : STEP_COMPONENTS[step];
-  const stepProps: StepProps = { resume, update, findings: review.findings, highlightedTarget: highlighted, prefilledBasics };
+  const stepProps: StepProps = {
+    resume,
+    update,
+    findings: review.findings,
+    highlightedTarget: highlighted,
+    prefilledBasics,
+    profileEducation: syncedEducation,
+    onSyncEducation: persistence === "account" ? syncEducation : undefined
+  };
 
   const downloadButton = (
     <button

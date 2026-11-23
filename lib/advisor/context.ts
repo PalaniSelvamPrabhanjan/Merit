@@ -1,6 +1,7 @@
 import type { ProjectCardData } from "@/lib/db/projects";
 import type { ViewerProfile } from "@/lib/db/profile";
 import { findCvLink, isValidCvLink } from "@/lib/profile/cv-link";
+import { hasEducation } from "@/lib/profile/education";
 import type { StudentContext, StudentProject } from "@/lib/advisor/types";
 
 // Pure builders only. The database loader lives in context-loader.ts (server-only),
@@ -94,6 +95,18 @@ export function buildStudentContext({
         }
       : base.profile,
     projects: studentProjects,
-    skills: uniqueSkills(studentProjects)
+    skills: uniqueSkills(studentProjects),
+    education:
+      profile?.education && hasEducation(profile.education)
+        ? [
+            {
+              institution: profile.education.institution,
+              course: profile.education.course,
+              startDate: profile.education.startMonth || null,
+              expectedGraduation: profile.education.graduationMonth || null,
+              yearOfStudy: profile.education.yearOfStudy
+            }
+          ]
+        : []
   };
 }

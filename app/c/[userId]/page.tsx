@@ -18,6 +18,7 @@ import { fetchPublicCandidateData, type ProjectCardData } from "@/lib/db/project
 import { resolveProjectVisualPreview } from "@/lib/artifacts";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { findCvLink, isValidCvLink } from "@/lib/profile/cv-link";
+import { educationLine } from "@/lib/profile/education";
 
 type PublicProfilePageProps = {
   params: Promise<{
@@ -136,6 +137,9 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
               </h1>
               {candidate.headline ? (
                 <p className="max-w-3xl text-sm leading-6 text-[#6a5f4e] sm:text-base">{candidate.headline}</p>
+              ) : null}
+              {educationLine(candidate.education) ? (
+                <p className="max-w-3xl text-sm leading-6 text-[#16130f] sm:text-base">{educationLine(candidate.education)}</p>
               ) : null}
               <div className="space-y-1 text-xs uppercase tracking-[0.12em] text-[#6a5f4e] sm:text-sm">
                 <p>{candidate.roleType === "recruiter" ? "Recruiter Passport" : "Passport"}</p>

@@ -117,10 +117,13 @@ export interface StudentProject {
   createdAt: string;
 }
 
-/** Education is not stored yet (planned for Stage 3); kept here so rules can rely on the shape. */
+/** Current course from the profile (candidate_profiles education columns). */
 export interface StudentEducation {
   institution: string;
   course: string;
+  /** "YYYY-MM" or null. */
+  startDate: string | null;
+  /** "YYYY-MM" or null. */
   expectedGraduation: string | null;
   yearOfStudy: number | null;
 }

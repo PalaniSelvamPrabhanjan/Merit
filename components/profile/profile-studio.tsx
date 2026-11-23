@@ -19,6 +19,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { findCvLink, isValidCvLink } from "@/lib/profile/cv-link";
+import { EducationCard } from "@/components/profile/education-card";
+import { emptyProfileEducation, type ProfileEducation } from "@/lib/profile/education";
 
 const MAX_CV_UPLOAD_BYTES = 15 * 1024 * 1024;
 const MAX_PORTFOLIO_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -51,6 +53,8 @@ type ProfileStudioProps = {
     passportSlug: string | null;
     profileCompletionScore: number;
   };
+  /** Current course, edited in its own card (saved separately from the rest of the profile). */
+  education?: ProfileEducation;
   ownProjects: ProjectCardData[];
   savedProjects: ProjectCardData[];
   savedProjectIds: string[];
@@ -266,6 +270,7 @@ function UploadDropCard({
 export function ProfileStudio({
   userId,
   initialProfile,
+  education = emptyProfileEducation(),
   ownProjects,
   savedProjects,
   savedProjectIds,
@@ -1097,6 +1102,8 @@ export function ProfileStudio({
               )}
             </Card>
           </div>
+
+          <EducationCard initialEducation={education} userId={userId} />
 
           <section className="space-y-4">
             <div className="flex items-center justify-between gap-3">

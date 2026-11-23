@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getViewerProfile } from "@/lib/db/profile";
+import { emptyProfileEducation } from "@/lib/profile/education";
 import {
   fetchProjectsByUser,
   fetchSavedInteractionState,
@@ -87,6 +88,7 @@ export default async function ProfilePage() {
           passportSlug: resolvedProfile.passportSlug,
           profileCompletionScore: resolvedProfile.profileCompletionScore
         }}
+        education={profile?.education ?? emptyProfileEducation()}
         inspiredProjectIds={interactionState.inspiredProjectIds}
         ownProjects={ownProjects}
         savedProjectIds={interactionState.savedProjectIds}

@@ -145,6 +145,7 @@ export function prefillResume(ctx: StudentContext, { appUrl }: { appUrl: string 
     ...emptyEducation(),
     institution: entry.institution,
     course: entry.course,
+    startDate: entry.startDate ?? "",
     endDate: entry.expectedGraduation ?? ""
   }));
   return resume;

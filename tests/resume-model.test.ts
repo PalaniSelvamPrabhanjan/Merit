@@ -95,6 +95,22 @@ describe("prefillResume", () => {
     expect(resume.skills).toEqual(["Figma", "Illustrator", "InDesign"]);
   });
 
+  it("prefills education from the profile", () => {
+    const withEducation = prefillResume(
+      context({
+        education: [{ institution: "Example Polytechnic", course: "Diploma in UX Design", startDate: "2025-04", expectedGraduation: "2028-03", yearOfStudy: 2 }]
+      }),
+      { appUrl: APP }
+    );
+    expect(withEducation.education).toHaveLength(1);
+    expect(withEducation.education[0]).toMatchObject({
+      institution: "Example Polytechnic",
+      course: "Diploma in UX Design",
+      startDate: "2025-04",
+      endDate: "2028-03"
+    });
+  });
+
   it("starts education and experience empty, with unique entry ids", () => {
     expect(resume.education).toEqual([]);
     expect(resume.experience).toEqual([]);

@@ -85,7 +85,20 @@ Apply:
 `supabase/migrations/202604220001_matches_rationale_and_recruiter_policies.sql`
 `supabase/migrations/202605050001_v2_project_showcase.sql`
 `supabase/migrations/202605140001_moderation_baseline.sql`
+`supabase/migrations/202604230001_project_artifact_storage.sql`
+`supabase/migrations/20260610154222_candidate_passport_slug.sql`
+`supabase/migrations/20260610160308_claimable_passports.sql`
 `supabase/migrations/202606160001_analytics_events_and_claim_public_tokens.sql`
+`supabase/migrations/20261123000001_resumes.sql`
+`supabase/migrations/20261123000002_profile_education.sql`
+
+### Pending for production (Nov 2026)
+The resume builder and profile education need two new migrations. Paste
+`supabase/apply/2026-11-23_resume-and-education.sql` into the Supabase SQL editor and run it.
+It only adds tables and columns, is safe to run more than once, and was tested against
+PostgreSQL 16 after all earlier migrations (including row-level security: students can only
+see their own resumes; education is public like the rest of the Passport). Until it is applied,
+the app still works: resumes save in the student's browser, and education can't be saved yet.
 
 ## Scripts
 - `npm run dev`

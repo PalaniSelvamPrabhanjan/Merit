@@ -2,6 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import type { createServerSupabaseClient } from "@/lib/supabase/server";
 import { calculateProfileCompletionScore } from "@/lib/profile/completion-score";
 import type { Database } from "@/lib/supabase/types";
+import { educationFromRow, type ProfileEducation } from "@/lib/profile/education";
 
 type DbClient = Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
@@ -132,6 +133,8 @@ export type ViewerProfile = {
   portfolioLinks: string[];
   passportSlug: string | null;
   profileCompletionScore: number;
+  /** Current course (empty until the education migration is applied and filled in). */
+  education: ProfileEducation;
 };
 
 export type DirectoryProjectPreview = {
@@ -189,7 +192,8 @@ export async function getViewerProfile(
     portfolioLinks: safeStringArray(profile.portfolio_links),
     passportSlug: safeNullableString(profile.passport_slug),
     profileCompletionScore:
-      typeof profile.profile_completion_score === "number" ? profile.profile_completion_score : 0
+      typeof profile.profile_completion_score === "number" ? profile.profile_completion_score : 0,
+    education: educationFromRow(profile)
   };
 }
 

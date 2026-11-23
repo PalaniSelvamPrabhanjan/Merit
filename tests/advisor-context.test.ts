@@ -16,7 +16,15 @@ const profile: ViewerProfile = {
   contactEmail: "avery@example.com",
   portfolioLinks: ["https://behance.net/avery", "https://drive.google.com/file/d/abc/view"],
   passportSlug: "avery-tan",
-  profileCompletionScore: 100
+  profileCompletionScore: 100,
+  education: {
+    institution: "Example Polytechnic",
+    course: "Diploma in UX Design",
+    startMonth: "2025-04",
+    graduationMonth: "2028-03",
+    yearOfStudy: 2,
+    showGraduationOnPassport: false
+  }
 };
 
 function project(overrides: Partial<ProjectCardData>): ProjectCardData {
@@ -60,9 +68,21 @@ describe("buildStudentContext", () => {
     expect(ctx.profile.name).toBe("Avery Tan");
     expect(ctx.projects.map((item) => item.projectId)).toEqual(["p1", "p2"]);
     expect(ctx.skills).toEqual(["figma", "illustrator", "user research"]);
-    expect(ctx.education).toEqual([]);
+    expect(ctx.education).toEqual([
+      { institution: "Example Polytechnic", course: "Diploma in UX Design", startDate: "2025-04", expectedGraduation: "2028-03", yearOfStudy: 2 }
+    ]);
     expect(ctx.resume).toBeNull();
     expect(ctx.now).toBe(NOW);
+  });
+
+  it("leaves education empty when the profile has none", () => {
+    const ctx = buildStudentContext({
+      userId: "user-1",
+      profile: { ...profile, education: { ...profile.education, institution: "", course: "" } },
+      projects: [],
+      now: NOW
+    });
+    expect(ctx.education).toEqual([]);
   });
 
   it("drops presentation-only fields such as engagement from projects", () => {
