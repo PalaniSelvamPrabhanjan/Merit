@@ -6,6 +6,8 @@ import { Card } from "@/components/ui/card";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getViewerProfile } from "@/lib/db/profile";
 import { emptyProfileEducation } from "@/lib/profile/education";
+import { OnboardingProvider } from "@/components/passport/onboarding-provider";
+import { loadOnboarding } from "@/lib/onboarding/state";
 import {
   fetchProjectsByUser,
   fetchSavedInteractionState,
@@ -52,11 +54,12 @@ export default async function ProfilePage() {
     );
   }
 
-  const [profile, ownProjects, savedProjects, interactionState] = await Promise.all([
+  const [profile, ownProjects, savedProjects, interactionState, onboarding] = await Promise.all([
     getViewerProfile(supabase, user.id),
     fetchProjectsByUser(supabase, user.id),
     fetchSavedProjectsByUser(supabase, user.id),
-    fetchSavedInteractionState(supabase, user.id)
+    fetchSavedInteractionState(supabase, user.id),
+    loadOnboarding(supabase, user.id)
   ]);
   const resolvedProfile = profile ?? {
     userId: user.id,
@@ -74,6 +77,7 @@ export default async function ProfilePage() {
 
   return (
     <AppShell roleType={resolvedProfile.roleType} userEmail={user.email}>
+      <OnboardingProvider initialState={onboarding.state} persistence={onboarding.persistence} userId={user.id}>
       <ProfileStudio
         initialProfile={{
           name: resolvedProfile.name ?? "",
@@ -95,6 +99,7 @@ export default async function ProfilePage() {
         savedProjects={savedProjects}
         userId={resolvedProfile.userId}
       />
+      </OnboardingProvider>
     </AppShell>
   );
 }

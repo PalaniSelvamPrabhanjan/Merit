@@ -52,7 +52,7 @@ export function EducationCard({
   };
 
   return (
-    <Card className="space-y-5 bg-transparent">
+    <Card className="scroll-mt-24 space-y-5 bg-transparent" id="card-education">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="label-caps mb-2">Education</p>

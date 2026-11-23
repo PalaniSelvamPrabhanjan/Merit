@@ -21,6 +21,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { findCvLink, isValidCvLink } from "@/lib/profile/cv-link";
 import { EducationCard } from "@/components/profile/education-card";
 import { emptyProfileEducation, type ProfileEducation } from "@/lib/profile/education";
+import { CoachTip } from "@/components/passport/coach-tip";
+import { EmptyProjects, HelpMenu, PassportCoach } from "@/components/passport/passport-coach";
+import { buildStudentContext } from "@/lib/advisor/context";
+import { TIP_IDS } from "@/lib/onboarding/state";
 
 const MAX_CV_UPLOAD_BYTES = 15 * 1024 * 1024;
 const MAX_PORTFOLIO_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -278,7 +282,43 @@ export function ProfileStudio({
 }: ProfileStudioProps) {
   const router = useRouter();
   const [profile, setProfile] = useState(initialProfile);
+  const [educationState, setEducationState] = useState(education);
+  const studentContext = useMemo(
+    () =>
+      buildStudentContext({
+        userId,
+        profile: {
+          userId,
+          email: profile.contactEmail,
+          name: profile.name,
+          headline: profile.headline,
+          roleType: profile.roleType,
+          targetRoles: profile.targetRoles,
+          bio: profile.bio,
+          contactEmail: profile.contactEmail,
+          portfolioLinks: profile.portfolioLinks,
+          passportSlug: profile.passportSlug,
+          profileCompletionScore: profile.profileCompletionScore,
+          education: educationState
+        },
+        projects: ownProjects
+      }),
+    [userId, profile, educationState, ownProjects]
+  );
   const [activeSection, setActiveSection] = useState<ProfileSectionId>("dashboard");
+
+  // "/profile#passport" (e.g. from the getting-started checklist) opens the Passport tab.
+  useEffect(() => {
+    const syncFromHash = () => {
+      if (window.location.hash === "#passport") {
+        setActiveSection("passport");
+        window.setTimeout(() => document.getElementById("card-passport-link")?.scrollIntoView({ block: "center" }), 50);
+      }
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
   const [identityModalOpen, setIdentityModalOpen] = useState(false);
   const [passportModalOpen, setPassportModalOpen] = useState(false);
@@ -880,8 +920,10 @@ export function ProfileStudio({
 
       return (
         <section className="space-y-8" id="section-dashboard">
+          <PassportCoach ctx={studentContext} />
+
           <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.72fr)]">
-            <Card className="space-y-5 bg-transparent">
+            <Card className="scroll-mt-24 space-y-5 bg-transparent" id="card-profile">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="label-caps mb-2">Profile</p>
@@ -977,7 +1019,7 @@ export function ProfileStudio({
               )}
             </Card>
 
-            <Card className="space-y-5 bg-transparent">
+            <Card className="scroll-mt-24 space-y-5 bg-transparent" id="card-contact">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="label-caps mb-2">Contact and links</p>
@@ -1103,9 +1145,9 @@ export function ProfileStudio({
             </Card>
           </div>
 
-          <EducationCard initialEducation={education} userId={userId} />
+          <EducationCard initialEducation={educationState} onSaved={setEducationState} userId={userId} />
 
-          <section className="space-y-4">
+          <section className="scroll-mt-24 space-y-4" id="section-projects">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="label-caps mb-2">Projects</p>
@@ -1119,11 +1161,18 @@ export function ProfileStudio({
                 <span>Add project</span>
               </Link>
             </div>
-            <ProjectRail
-              emptyText="You do not have projects yet. Publish one to activate your passport."
-              projectActions={(project) => <ProjectOwnerActions projectId={project.projectId} />}
-              projects={ownProjects}
-            />
+            <CoachTip tipId={TIP_IDS.featured}>
+              The project you mark as featured is the first one employers see on your Passport. Lead with your strongest.
+            </CoachTip>
+            {ownProjects.length === 0 ? (
+              <EmptyProjects />
+            ) : (
+              <ProjectRail
+                emptyText=""
+                projectActions={(project) => <ProjectOwnerActions projectId={project.projectId} />}
+                projects={ownProjects}
+              />
+            )}
           </section>
 
           <section className="space-y-4">
@@ -1189,7 +1238,7 @@ export function ProfileStudio({
               <div className="border border-[#d7cebd] bg-[#eee8dd] p-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="label-caps">Public path</p>
+                    <p className="label-caps" id="card-passport-link">Public path</p>
                     <p className="mt-2 truncate text-sm font-semibold text-[#16130f]">{passportPath}</p>
                     {!profile.passportSlug ? (
                       <p className="mt-1 text-xs text-[#6a5f4e]">Set a custom slug to replace the generated path.</p>
@@ -1971,8 +2020,18 @@ export function ProfileStudio({
                 <ActionIcon className="h-5 w-5" name="eye" />
                 <span>View passport</span>
               </Link>
+              <Link
+                className="inline-flex h-11 items-center border border-[#16130f] px-3 text-sm font-medium text-[#16130f] hover:bg-[#ebe3d6]"
+                href={`/c/${userId}?view=employer`}
+              >
+                Preview as employer
+              </Link>
+              <HelpMenu />
             </div>
           </header>
+          <CoachTip tipId={TIP_IDS.viewPassport}>
+            “Preview as employer” shows your public Passport exactly as employers see it, with notes on what they look at first.
+          </CoachTip>
 
       <Card className="sticky top-16 z-20 border-[#d7cebd] bg-[#f4f0e8]/95 p-3 backdrop-blur lg:hidden">
         <nav className="overflow-x-auto">
