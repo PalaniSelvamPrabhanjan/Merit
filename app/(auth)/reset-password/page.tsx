@@ -8,8 +8,6 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 import { mapSupabaseAuthError } from "@/lib/auth/auth-errors";
 import {
   getSupportEmail,
-  getSupportInstagramHandle,
-  getSupportInstagramUrl,
   getSupportUrl
 } from "@/lib/public-config";
 import { Button } from "@/components/ui/button";
@@ -48,8 +46,6 @@ export default function ResetPasswordPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supportEmail = getSupportEmail();
-  const supportInstagramHandle = getSupportInstagramHandle();
-  const supportInstagramUrl = getSupportInstagramUrl();
   const supportUrl = getSupportUrl();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -193,7 +189,7 @@ export default function ResetPasswordPage() {
       <Card className="mx-auto w-full max-w-lg space-y-6 bg-transparent">
         <div className="space-y-5 text-center">
           <h1 className="font-serif text-4xl leading-tight text-[#16130f]">Set a new password</h1>
-          <p className="mx-auto max-w-md text-base leading-7 text-[#7b705f]">Choose a new password for your account.</p>
+          <p className="mx-auto max-w-md text-base leading-7 text-[#6a5f4e]">Choose a new password for your account.</p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -233,7 +229,7 @@ export default function ResetPasswordPage() {
           </Button>
         </form>
 
-        <p className="text-sm leading-6 text-[#7b705f]">
+        <p className="text-sm leading-6 text-[#6a5f4e]">
           Need another link?{" "}
           <Link className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4" href="/forgot-password">
             Request a new password reset
@@ -244,7 +240,7 @@ export default function ResetPasswordPage() {
           </Link>
           .
         </p>
-        <p className="text-xs leading-5 text-[#7b705f]">
+        <p className="text-xs leading-5 text-[#6a5f4e]">
           Need help? Contact{" "}
           <a
             className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4"
@@ -253,15 +249,6 @@ export default function ResetPasswordPage() {
             target="_blank"
           >
             {supportEmail}
-          </a>{" "}
-          or{" "}
-          <a
-            className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4"
-            href={supportInstagramUrl}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {supportInstagramHandle}
           </a>
           .
         </p>

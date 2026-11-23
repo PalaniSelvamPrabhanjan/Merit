@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { findCvLink, isValidCvLink } from "@/lib/profile/cv-link";
 
 const MAX_CV_UPLOAD_BYTES = 15 * 1024 * 1024;
 const MAX_PORTFOLIO_UPLOAD_BYTES = 50 * 1024 * 1024;
@@ -107,37 +108,8 @@ function toPortfolioLabel(link: string) {
   }
 }
 
-function findCvLink(links: string[]) {
-  return links.find((link) => isValidCvLink(link)) ?? "";
-}
 
-function isHttpUrl(value: string) {
-  try {
-    const parsed = new URL(value);
-    return parsed.protocol === "http:" || parsed.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
 
-function isValidCvLink(link: string) {
-  const trimmed = link.trim();
-  if (!trimmed || !isHttpUrl(trimmed)) {
-    return false;
-  }
-
-  const normalized = trimmed.toLowerCase();
-  if (normalized.includes("linkedin.com")) {
-    return false;
-  }
-
-  return (
-    /(resume|cv|curriculum)/i.test(normalized) ||
-    /\.pdf(\?|#|$)/i.test(normalized) ||
-    /\.docx?(\?|#|$)/i.test(normalized) ||
-    /google\.com\/document/i.test(normalized)
-  );
-}
 
 function isAllowedCvFile(file: File) {
   const lowerName = file.name.toLowerCase();
@@ -739,7 +711,7 @@ export function ProfileStudio({
     const parsedPortfolioLinks = parseLineSeparatedInput(portfolioLinksDraft);
     const normalizedCvLink = cvLinkDraft.trim();
     if (normalizedCvLink && !isValidCvLink(normalizedCvLink)) {
-      setPassportError("Enter a valid CV link (PDF, DOC, DOCX, or Google Doc). LinkedIn is not accepted as a CV.");
+      setPassportError("Enter a link to your resume file: a PDF or Word link, or a Google Drive, Google Docs, Dropbox or OneDrive share link. LinkedIn is not accepted as a resume.");
       setPassportSaving(false);
       return;
     }
@@ -880,7 +852,7 @@ export function ProfileStudio({
     try {
       const normalizedCvLink = cvLinkDraft.trim();
       if (normalizedCvLink && !isValidCvLink(normalizedCvLink)) {
-        throw new Error("Enter a valid CV link (PDF, DOC, DOCX, or Google Doc). LinkedIn is not accepted as a CV.");
+        throw new Error("Enter a link to your resume file: a PDF or Word link, or a Google Drive, Google Docs, Dropbox or OneDrive share link. LinkedIn is not accepted as a resume.");
       }
 
       const nonCvLinks = profile.portfolioLinks.filter((link) => !isValidCvLink(link));
@@ -979,7 +951,7 @@ export function ProfileStudio({
                     <h3 className="font-serif text-3xl leading-tight text-[#16130f]">
                       {profile.name || "Merit Builder"}
                     </h3>
-                    <p className="mt-2 text-base leading-7 text-[#7b705f]">
+                    <p className="mt-2 text-base leading-7 text-[#6a5f4e]">
                       {profile.headline || "Add a headline so people understand what you build and where you are headed."}
                     </p>
                   </div>
@@ -991,7 +963,7 @@ export function ProfileStudio({
                   </div>
                   <div>
                     <p className="label-caps mb-2">Bio</p>
-                    <p className="max-w-3xl text-base leading-7 text-[#7b705f]">
+                    <p className="max-w-3xl text-base leading-7 text-[#6a5f4e]">
                       {profile.bio || "No bio added yet."}
                     </p>
                   </div>
@@ -1080,7 +1052,7 @@ export function ProfileStudio({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-[#7b705f]">Not set yet.</p>
+                      <p className="text-[#6a5f4e]">Not set yet.</p>
                     )}
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -1095,7 +1067,7 @@ export function ProfileStudio({
                           Open Resume
                         </a>
                       ) : (
-                        <p className="mt-1 text-[#7b705f]">Not set</p>
+                        <p className="mt-1 text-[#6a5f4e]">Not set</p>
                       )}
                     </div>
                   </div>
@@ -1116,7 +1088,7 @@ export function ProfileStudio({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-[#7b705f]">No portfolio links added yet.</p>
+                      <p className="text-[#6a5f4e]">No portfolio links added yet.</p>
                     )}
                   </div>
                 </div>
@@ -1176,7 +1148,7 @@ export function ProfileStudio({
               <div>
                 <p className="label-caps mb-2">Passport</p>
                 <h2 className="font-serif text-3xl leading-tight text-[#16130f]">Public profile preview</h2>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-[#7b705f]">
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-[#6a5f4e]">
                   This is the dedicated passport surface for sharing and checking how your public profile reads.
                 </p>
               </div>
@@ -1212,7 +1184,7 @@ export function ProfileStudio({
                     <p className="label-caps">Public path</p>
                     <p className="mt-2 truncate text-sm font-semibold text-[#16130f]">{passportPath}</p>
                     {!profile.passportSlug ? (
-                      <p className="mt-1 text-xs text-[#7b705f]">Set a custom slug to replace the generated path.</p>
+                      <p className="mt-1 text-xs text-[#6a5f4e]">Set a custom slug to replace the generated path.</p>
                     ) : null}
                   </div>
                   <IconButton
@@ -1224,7 +1196,7 @@ export function ProfileStudio({
                 {isPassportSlugEditing ? (
                   <div className="mt-4 space-y-3">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-sm text-[#7b705f]">/passport/</span>
+                      <span className="text-sm text-[#6a5f4e]">/passport/</span>
                       <Input
                         className="min-w-[220px] flex-1"
                         onChange={(event) => setPassportSlugDraft(normalizePassportSlug(event.target.value))}
@@ -1239,7 +1211,7 @@ export function ProfileStudio({
                         variant="primary"
                       />
                     </div>
-                    <p className="text-xs text-[#7b705f]">Lowercase letters, numbers, and hyphens only.</p>
+                    <p className="text-xs text-[#6a5f4e]">Lowercase letters, numbers, and hyphens only.</p>
                   </div>
                 ) : null}
                 {passportSlugError ? <p className="mt-3 text-sm text-red-700">{passportSlugError}</p> : null}
@@ -1260,14 +1232,14 @@ export function ProfileStudio({
                 ) : null}
                 <div className="max-w-3xl space-y-2">
                   <h3 className="font-serif text-2xl leading-tight text-[#16130f]">{featuredProject.title}</h3>
-                  <p className="text-sm leading-6 text-[#7b705f]">{featuredProject.hook || featuredProject.problemSolved}</p>
+                  <p className="text-sm leading-6 text-[#6a5f4e]">{featuredProject.hook || featuredProject.problemSolved}</p>
                   <p className="text-sm leading-6 text-[#4b4439]">
                     {featuredProject.whatWasBuilt || "Add a detailed project description so passport visitors get context."}
                   </p>
                 </div>
               </div>
             ) : (
-              <p className="border-t border-[#d7cebd] pt-5 text-sm text-[#7b705f]">
+              <p className="border-t border-[#d7cebd] pt-5 text-sm text-[#6a5f4e]">
                 Add a project to make the public passport preview feel complete.
               </p>
             )}
@@ -1280,7 +1252,7 @@ export function ProfileStudio({
 
           <Card className="space-y-4 bg-[#eee8dd]">
             <p className="label-caps">Passport card</p>
-            <div className="flex h-16 w-16 items-center justify-center bg-[#dfd6c6] font-serif text-xl text-[#7b705f]">
+            <div className="flex h-16 w-16 items-center justify-center bg-[#dfd6c6] font-serif text-xl text-[#6a5f4e]">
               {(profile.name || "M")
                 .split(" ")
                 .map((part) => part[0])
@@ -1290,7 +1262,7 @@ export function ProfileStudio({
             </div>
             <div>
               <h3 className="font-serif text-2xl leading-tight text-[#16130f]">{profile.name || "Merit Builder"}</h3>
-              <p className="mt-2 text-sm leading-6 text-[#7b705f]">{profile.headline || "No headline added yet."}</p>
+              <p className="mt-2 text-sm leading-6 text-[#6a5f4e]">{profile.headline || "No headline added yet."}</p>
             </div>
             <div className="space-y-3 border-y border-[#d7cebd] py-4">
               <p className="label-caps">Open to</p>
@@ -1301,10 +1273,10 @@ export function ProfileStudio({
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-[#7b705f]">Add target roles on Dashboard.</p>
+                <p className="text-sm text-[#6a5f4e]">Add target roles on Dashboard.</p>
               )}
             </div>
-            <p className="text-sm leading-6 text-[#7b705f]">
+            <p className="text-sm leading-6 text-[#6a5f4e]">
               Edit profile details, resume, portfolio links, projects, and saved work from Dashboard.
             </p>
           </Card>
@@ -1322,7 +1294,7 @@ export function ProfileStudio({
                 <h2 className="font-serif text-3xl leading-tight text-[#16130f]">
                   {profile.name || "Merit Builder"}
                 </h2>
-                <p className="max-w-2xl text-base leading-7 text-[#7b705f]">
+                <p className="max-w-2xl text-base leading-7 text-[#6a5f4e]">
                   {profile.headline || "Add a headline so people understand what you build and where you are headed."}
                 </p>
               </div>
@@ -1353,17 +1325,17 @@ export function ProfileStudio({
               <div className="border border-[#d7cebd] bg-[#eee8dd] p-3">
                 <p className="label-caps">Profile</p>
                 <p className="mt-1 text-xl font-semibold text-[#16130f]">{profile.profileCompletionScore}%</p>
-                <p className="mt-1 text-sm text-[#7b705f]">Readiness</p>
+                <p className="mt-1 text-sm text-[#6a5f4e]">Readiness</p>
               </div>
               <div className="border border-[#d7cebd] bg-[#eee8dd] p-3">
                 <p className="label-caps">Projects</p>
                 <p className="mt-1 text-xl font-semibold text-[#16130f]">{ownProjects.length}</p>
-                <p className="mt-1 text-sm text-[#7b705f]">Published builds</p>
+                <p className="mt-1 text-sm text-[#6a5f4e]">Published builds</p>
               </div>
               <div className="border border-[#d7cebd] bg-[#eee8dd] p-3">
                 <p className="label-caps">Share</p>
                 <p className="mt-2 truncate text-sm font-semibold text-[#16130f]">{passportPath}</p>
-                <p className="mt-1 text-sm text-[#7b705f]">Public passport</p>
+                <p className="mt-1 text-sm text-[#6a5f4e]">Public passport</p>
               </div>
             </div>
 
@@ -1384,7 +1356,7 @@ export function ProfileStudio({
           <Card className="space-y-4 bg-[#eee8dd]">
             <div className="space-y-2">
               <p className="label-caps">Passport preview</p>
-              <div className="h-16 w-16 border border-[#d7cebd] bg-[#ded6c7] p-3 font-serif text-xl text-[#7b705f]">
+              <div className="h-16 w-16 border border-[#d7cebd] bg-[#ded6c7] p-3 font-serif text-xl text-[#6a5f4e]">
                 {(profile.name || "M")
                   .split(" ")
                   .map((part) => part[0])
@@ -1395,7 +1367,7 @@ export function ProfileStudio({
               <h3 className="font-serif text-2xl leading-tight text-[#16130f]">
                 {profile.name || "Merit Builder"}
               </h3>
-              <p className="text-sm leading-6 text-[#7b705f]">{profile.headline || "No headline added yet."}</p>
+              <p className="text-sm leading-6 text-[#6a5f4e]">{profile.headline || "No headline added yet."}</p>
             </div>
 
             <div className="space-y-3 border-y border-[#d7cebd] py-4">
@@ -1407,7 +1379,7 @@ export function ProfileStudio({
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-[#7b705f]">Add target roles to clarify your direction.</p>
+                <p className="text-sm text-[#6a5f4e]">Add target roles to clarify your direction.</p>
               )}
             </div>
 
@@ -1415,12 +1387,12 @@ export function ProfileStudio({
               <div className="space-y-2">
                 <p className="label-caps">Featured evidence</p>
                 <p className="font-serif text-xl leading-tight text-[#16130f]">{featuredProject.title}</p>
-                <p className="line-clamp-2 text-sm leading-6 text-[#7b705f]">
+                <p className="line-clamp-2 text-sm leading-6 text-[#6a5f4e]">
                   {featuredProject.hook || featuredProject.problemSolved}
                 </p>
               </div>
             ) : (
-              <p className="text-sm leading-6 text-[#7b705f]">Add a project to make the preview feel complete.</p>
+              <p className="text-sm leading-6 text-[#6a5f4e]">Add a project to make the preview feel complete.</p>
             )}
           </Card>
         </section>
@@ -1951,7 +1923,7 @@ export function ProfileStudio({
             {sections.map((section) => (
               <button
                 className={`block text-left transition-colors ${
-                  activeSection === section.id ? "text-[#16130f]" : "text-[#7b705f] hover:text-[#16130f]"
+                  activeSection === section.id ? "text-[#16130f]" : "text-[#6a5f4e] hover:text-[#16130f]"
                 }`}
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
@@ -1970,7 +1942,7 @@ export function ProfileStudio({
               <h1 className="font-serif text-3xl leading-none text-[#16130f]">
                 {activeSection === "passport" ? "Public passport" : "Merit workspace"}
               </h1>
-              <p className="max-w-2xl text-sm leading-6 text-[#7b705f]">
+              <p className="max-w-2xl text-sm leading-6 text-[#6a5f4e]">
                 {activeSection === "passport"
                   ? "Preview and share the public-facing version of your Merit profile."
                   : "Manage your profile, project proof, resume, portfolio links, and saved references in one place."}

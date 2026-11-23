@@ -49,7 +49,7 @@ export default async function ClaimPassportPage({ params, searchParams }: ClaimP
           <Card className="max-w-2xl space-y-4">
             <p className="label-caps">Claim link</p>
             <h1 className="font-serif text-3xl text-[#16130f]">This passport has already been claimed.</h1>
-            <p className="text-sm leading-6 text-[#7b705f]">
+            <p className="text-sm leading-6 text-[#6a5f4e]">
               Check your dashboard or passport page to view your passport.
             </p>
             <Link href={user ? "/home" : buildAuthPath("/sign-in", "/home")}>
@@ -70,7 +70,7 @@ export default async function ClaimPassportPage({ params, searchParams }: ClaimP
           <Card className="max-w-2xl space-y-4">
             <p className="label-caps">Claim link</p>
             <h1 className="font-serif text-3xl text-[#16130f]">This claim link is invalid</h1>
-            <p className="text-sm leading-6 text-[#7b705f]">
+            <p className="text-sm leading-6 text-[#6a5f4e]">
               Ask the Merit admin who sent it to generate a fresh claim link.
             </p>
             {claimErrorMessage ? (
@@ -98,7 +98,7 @@ export default async function ClaimPassportPage({ params, searchParams }: ClaimP
               ) : null}
               <p className="label-caps">Expired</p>
               <h2 className="font-serif text-2xl text-[#16130f]">This Passport claim link has expired</h2>
-              <p className="text-sm leading-6 text-[#7b705f]">
+              <p className="text-sm leading-6 text-[#6a5f4e]">
                 The Passport preview is still here, but claiming is disabled until an admin regenerates the link.
               </p>
             </>

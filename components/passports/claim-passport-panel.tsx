@@ -54,7 +54,7 @@ export function ClaimPassportPanel({ initialErrorMessage = null, token }: ClaimP
       <div className="space-y-4">
         <p className="label-caps">Claim link</p>
         <h2 className="font-serif text-2xl text-[#16130f]">This passport has already been claimed.</h2>
-        <p className="text-sm leading-6 text-[#7b705f]">
+        <p className="text-sm leading-6 text-[#6a5f4e]">
           Check your dashboard or passport page to view it.
         </p>
         <Link href="/home">

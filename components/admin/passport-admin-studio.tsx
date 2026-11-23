@@ -551,7 +551,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
         <h1 className="font-serif text-4xl leading-tight text-[#16130f] md:text-5xl">
           Claimable Passports
         </h1>
-        <p className="max-w-3xl text-base leading-7 text-[#7b705f]">
+        <p className="max-w-3xl text-base leading-7 text-[#6a5f4e]">
           Create unclaimed Passports, copy secure claim links, and regenerate expired links.
         </p>
       </div>
@@ -587,11 +587,11 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
                 <div className="max-w-3xl space-y-3">
                   <p className="label-caps">Project editor</p>
                   <h2 className="font-serif text-3xl leading-none text-[#16130f]">Create claimable Passport</h2>
-                  <p className="text-sm leading-6 text-[#7b705f]">
+                  <p className="text-sm leading-6 text-[#6a5f4e]">
                     Build the placeholder project like a normal Merit project, then generate a private claim link.
                   </p>
                 </div>
-                <div className="border border-[#d7cebd] bg-[#eee8dd] px-4 py-3 text-sm text-[#7b705f]">
+                <div className="border border-[#d7cebd] bg-[#eee8dd] px-4 py-3 text-sm text-[#6a5f4e]">
                   Claim links expire in 3 days
                 </div>
               </div>
@@ -600,7 +600,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
             <Card className="space-y-4">
               <div>
                 <h3 className="font-serif text-2xl text-[#16130f]">Choose project type</h3>
-                <p className="mt-2 text-sm text-[#7b705f]">Pick the format that best describes the main deliverable.</p>
+                <p className="mt-2 text-sm text-[#6a5f4e]">Pick the format that best describes the main deliverable.</p>
               </div>
               <div className="grid gap-2 sm:grid-cols-2">
                 {(["web", "design", "document", "other"] as const).map((type) => (
@@ -627,11 +627,11 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
             <Card className="space-y-4">
               <div>
                 <h3 className="font-serif text-2xl text-[#16130f]">Add main content</h3>
-                <p className="mt-2 text-sm text-[#7b705f]">Paste project links and add a reliable visual thumbnail.</p>
+                <p className="mt-2 text-sm text-[#6a5f4e]">Paste project links and add a reliable visual thumbnail.</p>
               </div>
               <div className="border border-[#d7cebd] bg-[#f4f0e8] px-4 py-3">
                 <p className="label-caps">In-Merit viewer tips</p>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[#7b705f]">
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[#6a5f4e]">
                   {artifactTips(createProjectType).map((tip) => (
                     <li key={tip}>{tip}</li>
                   ))}
@@ -862,7 +862,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
             <Card className="space-y-4">
               <div>
                 <h3 className="font-serif text-2xl text-[#16130f]">Title and story</h3>
-                <p className="mt-2 text-sm text-[#7b705f]">Keep the project concise and scannable for the claim preview.</p>
+                <p className="mt-2 text-sm text-[#6a5f4e]">Keep the project concise and scannable for the claim preview.</p>
               </div>
               <label className="block space-y-2 text-sm text-[#16130f]">
                 Project title
@@ -901,7 +901,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
             <Card className="space-y-4">
               <div>
                 <h3 className="font-serif text-2xl text-[#16130f]">Skills</h3>
-                <p className="mt-2 text-sm text-[#7b705f]">These become both Passport capabilities and project tags.</p>
+                <p className="mt-2 text-sm text-[#6a5f4e]">These become both Passport capabilities and project tags.</p>
               </div>
               <label className="block space-y-2 text-sm text-[#16130f]">
                 Skill tags (comma separated)
@@ -916,7 +916,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
                 <div className="flex flex-wrap gap-2">
                   {normalizedCreateSkillList.slice(0, 10).map((skill) => (
                     <span
-                      className="border border-[#f3c945] bg-[#fbf8f0] px-2.5 py-1 text-xs font-medium text-[#7b705f]"
+                      className="border border-[#f3c945] bg-[#fbf8f0] px-2.5 py-1 text-xs font-medium text-[#6a5f4e]"
                       key={skill}
                     >
                       {skill}
@@ -930,7 +930,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
                   <h3 className="font-serif text-2xl text-[#16130f]">Additional projects</h3>
-                  <p className="mt-2 text-sm text-[#7b705f]">Add more project blocks before generating the claim link.</p>
+                  <p className="mt-2 text-sm text-[#6a5f4e]">Add more project blocks before generating the claim link.</p>
                 </div>
                 <Button onClick={addCreateProject} type="button" variant="secondary">
                   Add another project
@@ -938,7 +938,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
               </div>
 
               {createExtraProjects.length === 0 ? (
-                <p className="border border-[#d7cebd] bg-[#f4f0e8] p-3 text-sm text-[#7b705f]">
+                <p className="border border-[#d7cebd] bg-[#f4f0e8] p-3 text-sm text-[#6a5f4e]">
                   One project is included by default. Add another when the Passport should launch with multiple projects.
                 </p>
               ) : null}
@@ -1271,7 +1271,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
             <Card className="space-y-4">
               <div>
                 <h3 className="font-serif text-2xl text-[#16130f]">Passport owner</h3>
-                <p className="mt-2 text-sm text-[#7b705f]">Set the public identity and optional path before generating the claim link.</p>
+                <p className="mt-2 text-sm text-[#6a5f4e]">Set the public identity and optional path before generating the claim link.</p>
               </div>
               <div className="grid gap-3 md:grid-cols-2">
                 <label className="block space-y-2 text-sm text-[#16130f]">
@@ -1294,7 +1294,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
               <label className="block space-y-2 text-sm text-[#16130f]">
                 Public Passport path
                 <div className="grid gap-2 sm:grid-cols-[auto_1fr] sm:items-center">
-                  <span className="border border-[#d7cebd] bg-[#eee8dd] px-3 py-2 text-sm text-[#7b705f]">
+                  <span className="border border-[#d7cebd] bg-[#eee8dd] px-3 py-2 text-sm text-[#6a5f4e]">
                     /passport/
                   </span>
                   <Input
@@ -1314,7 +1314,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
             <Card className="space-y-4">
               <div>
                 <h3 className="font-serif text-2xl text-[#16130f]">Optional links</h3>
-                <p className="mt-2 text-sm text-[#7b705f]">These carry into the claimed Passport profile.</p>
+                <p className="mt-2 text-sm text-[#6a5f4e]">These carry into the claimed Passport profile.</p>
               </div>
               <div className="grid gap-4 md:grid-cols-2">
                 <label className="block space-y-2 text-sm text-[#16130f]">
@@ -1353,7 +1353,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
           <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
             <Card className="overflow-hidden p-0">
               <div className="border-b border-[#d7cebd] px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7b705f]">Project Card Preview</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6a5f4e]">Project Card Preview</p>
               </div>
               <div className="space-y-4 p-4">
                 <div className="overflow-hidden border border-[#d7cebd]">
@@ -1371,7 +1371,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
                         src={createVisual.previewUrl}
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center px-6 text-center text-sm text-[#7b705f]">
+                      <div className="flex h-full items-center justify-center px-6 text-center text-sm text-[#6a5f4e]">
                         Add a project link or cover image
                       </div>
                     )}
@@ -1379,22 +1379,22 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
                 </div>
                 <div className="space-y-1">
                   <p className="text-lg font-semibold text-[#16130f]">{createProjectTitle || "Untitled Project"}</p>
-                  <p className="text-sm text-[#7b705f]">{createProjectHook || "Your one-line hook appears here."}</p>
-                  <p className="text-xs text-[#7b705f]">{projectTypeLabel(createProjectType)}</p>
+                  <p className="text-sm text-[#6a5f4e]">{createProjectHook || "Your one-line hook appears here."}</p>
+                  <p className="text-xs text-[#6a5f4e]">{projectTypeLabel(createProjectType)}</p>
                 </div>
               </div>
             </Card>
 
             <Card className="space-y-3 border-[#d7cebd] bg-[#fbf8f0]">
               <p className="text-sm font-semibold text-[#16130f]">Checklist</p>
-              <p className="text-sm text-[#7b705f]">{createProjectTitle.trim() ? "Done" : "Missing"} project title</p>
-              <p className="text-sm text-[#7b705f]">{createProjectHook.trim() ? "Done" : "Missing"} one-line hook</p>
-              <p className="text-sm text-[#7b705f]">
+              <p className="text-sm text-[#6a5f4e]">{createProjectTitle.trim() ? "Done" : "Missing"} project title</p>
+              <p className="text-sm text-[#6a5f4e]">{createProjectHook.trim() ? "Done" : "Missing"} one-line hook</p>
+              <p className="text-sm text-[#6a5f4e]">
                 {preparedCreateArtifacts.length > 0 || createProjectImageUrls.length > 0 ? "Done" : "Missing"} visual source
               </p>
-              <p className="text-sm text-[#7b705f]">{createExtraProjects.length + 1} project{createExtraProjects.length === 0 ? "" : "s"} in this claim</p>
-              <p className="text-sm text-[#7b705f]">{createPassportSlug.trim() ? "Set" : "Optional"} public path</p>
-              <p className="text-sm text-[#7b705f]">Claim link expires after 3 days</p>
+              <p className="text-sm text-[#6a5f4e]">{createExtraProjects.length + 1} project{createExtraProjects.length === 0 ? "" : "s"} in this claim</p>
+              <p className="text-sm text-[#6a5f4e]">{createPassportSlug.trim() ? "Set" : "Optional"} public path</p>
+              <p className="text-sm text-[#6a5f4e]">Claim link expires after 3 days</p>
             </Card>
           </aside>
         </form>
@@ -1405,12 +1405,12 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
               <p className="label-caps">Manage</p>
               <h2 className="mt-2 font-serif text-2xl text-[#16130f]">Recent Passports</h2>
             </div>
-            <p className="text-sm text-[#7b705f]">{passports.length} total</p>
+            <p className="text-sm text-[#6a5f4e]">{passports.length} total</p>
           </div>
 
           {passports.length === 0 ? (
             <Card>
-              <p className="text-sm text-[#7b705f]">No claimable Passports yet.</p>
+              <p className="text-sm text-[#6a5f4e]">No claimable Passports yet.</p>
             </Card>
           ) : (
             <div className="space-y-4">
@@ -1423,8 +1423,8 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="space-y-1">
                         <h3 className="font-serif text-2xl text-[#16130f]">{passport.fullName}</h3>
-                        <p className="text-sm text-[#7b705f]">{passport.email || "No email set"}</p>
-                        <p className="text-xs uppercase tracking-[0.12em] text-[#7b705f]">
+                        <p className="text-sm text-[#6a5f4e]">{passport.email || "No email set"}</p>
+                        <p className="text-xs uppercase tracking-[0.12em] text-[#6a5f4e]">
                           Expires {formatDate(passport.claimExpiresAt)}
                         </p>
                       </div>
@@ -1433,7 +1433,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
 
                     {passport.claimLink ? (
                       <div className="grid gap-2 border border-[#d7cebd] bg-[#f4f0e8] p-3 md:grid-cols-[minmax(0,1fr)_auto]">
-                        <label className="block space-y-1 text-xs uppercase tracking-[0.12em] text-[#7b705f]">
+                        <label className="block space-y-1 text-xs uppercase tracking-[0.12em] text-[#6a5f4e]">
                           Claim link
                           <Input readOnly value={passport.claimLink} />
                         </label>
@@ -1447,7 +1447,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
                         </Button>
                       </div>
                     ) : canManage ? (
-                      <p className="border border-[#d7cebd] bg-[#f4f0e8] p-3 text-sm text-[#7b705f]">
+                      <p className="border border-[#d7cebd] bg-[#f4f0e8] p-3 text-sm text-[#6a5f4e]">
                         No copyable claim token is stored for this row yet. Regenerating once will create one.
                       </p>
                     ) : null}
@@ -1589,7 +1589,7 @@ export function PassportAdminStudio({ passports }: PassportAdminStudioProps) {
                                     </div>
                                   ) : null}
                                   {uploadingProjectId === projectKey ? (
-                                    <p className="text-sm text-[#7b705f]">Uploading files...</p>
+                                    <p className="text-sm text-[#6a5f4e]">Uploading files...</p>
                                   ) : null}
                                 </fieldset>
                               );

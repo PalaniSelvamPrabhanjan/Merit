@@ -105,7 +105,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
       <article className="editorial-container pt-12">
         <Link
           aria-label={backLabel}
-          className="inline-flex items-center gap-2 text-sm text-[#16130f] hover:text-[#7b705f]"
+          className="inline-flex items-center gap-2 text-sm text-[#16130f] hover:text-[#6a5f4e]"
           href={backHref}
           title={backLabel}
         >
@@ -118,7 +118,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
             <h1 className="font-serif text-3xl leading-[1.06] text-[#16130f] sm:text-4xl lg:text-5xl">
               {project.title}
             </h1>
-            <p className="max-w-3xl text-base leading-7 text-[#7b705f]">{project.hook}</p>
+            <p className="max-w-3xl text-base leading-7 text-[#6a5f4e]">{project.hook}</p>
           </div>
 
           <div className="grid gap-5 border-y border-[#d7cebd] py-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -151,7 +151,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
               src={visual.previewUrl}
             />
           ) : (
-            <div className="flex min-h-64 items-center justify-center bg-[#e5ded1] text-[#7b705f]">Preview coming soon</div>
+            <div className="flex min-h-64 items-center justify-center bg-[#e5ded1] text-[#6a5f4e]">Preview coming soon</div>
           )}
         </div>
 
@@ -161,13 +161,13 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
               <p className="label-caps">Overview</p>
               <p className="text-base leading-7 text-[#4b4439]">{project.whatWasBuilt || "No detailed overview has been added yet."}</p>
               {project.problemSolved ? (
-                <p className="text-base leading-7 text-[#7b705f]">
+                <p className="text-base leading-7 text-[#6a5f4e]">
                   <span className="text-[#16130f]">Problem: </span>
                   {project.problemSolved}
                 </p>
               ) : null}
               {project.impact ? (
-                <p className="text-base leading-7 text-[#7b705f]">
+                <p className="text-base leading-7 text-[#6a5f4e]">
                   <span className="text-[#16130f]">Outcome: </span>
                   {project.impact}
                 </p>
@@ -205,7 +205,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
                       target="_blank"
                     >
                       <span className="block truncate">{artifact.label}</span>
-                      <span className="mt-1 block text-xs capitalize text-[#7b705f]">{artifact.type}</span>
+                      <span className="mt-1 block text-xs capitalize text-[#6a5f4e]">{artifact.type}</span>
                     </a>
                   ))}
                 </div>
@@ -217,7 +217,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
             <div className="space-y-2">
               <p className="label-caps">Creator</p>
               <p className="text-base text-[#16130f]">{project.authorName ?? "Merit User"}</p>
-              {project.authorHeadline ? <p className="text-sm leading-6 text-[#7b705f]">{project.authorHeadline}</p> : null}
+              {project.authorHeadline ? <p className="text-sm leading-6 text-[#6a5f4e]">{project.authorHeadline}</p> : null}
               <Link
                 aria-label="View creator profile"
                 className={iconControlClassName({ className: "mt-3" })}
@@ -249,7 +249,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Projec
               />
             ) : (
               <div className="space-y-3 border border-[#d7cebd] bg-[#eee8dd] p-4">
-                <p className="text-sm text-[#7b705f]">Sign in to save or mark this project as inspiring.</p>
+                <p className="text-sm text-[#6a5f4e]">Sign in to save or mark this project as inspiring.</p>
                 <div className="flex flex-wrap gap-2">
                   <Link href="/sign-in">
                     <Button variant="secondary">Sign in</Button>

@@ -17,6 +17,7 @@ import { getViewerProfile } from "@/lib/db/profile";
 import { fetchPublicCandidateData, type ProjectCardData } from "@/lib/db/projects";
 import { resolveProjectVisualPreview } from "@/lib/artifacts";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { findCvLink, isValidCvLink } from "@/lib/profile/cv-link";
 
 type PublicProfilePageProps = {
   params: Promise<{
@@ -24,31 +25,7 @@ type PublicProfilePageProps = {
   }>;
 };
 
-function isHttpUrl(value: string) {
-  try {
-    const parsed = new URL(value);
-    return parsed.protocol === "http:" || parsed.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
 
-function isValidCvLink(link: string) {
-  const trimmed = link.trim();
-  if (!trimmed || !isHttpUrl(trimmed)) {
-    return false;
-  }
-  const normalized = trimmed.toLowerCase();
-  if (normalized.includes("linkedin.com")) {
-    return false;
-  }
-  return (
-    /(resume|cv|curriculum)/i.test(normalized) ||
-    /\.pdf(\?|#|$)/i.test(normalized) ||
-    /\.docx?(\?|#|$)/i.test(normalized) ||
-    /google\.com\/document/i.test(normalized)
-  );
-}
 
 function initialsForName(name: string) {
   return name
@@ -89,7 +66,7 @@ function ProjectArchiveItem({
               src={visual.previewUrl}
             />
           ) : (
-            <div className="flex h-full items-center justify-center px-6 text-center text-sm text-[#7b705f]">
+            <div className="flex h-full items-center justify-center px-6 text-center text-sm text-[#6a5f4e]">
               Preview coming soon
             </div>
           )}
@@ -101,7 +78,7 @@ function ProjectArchiveItem({
         </div>
         <div className="mt-4 space-y-1">
           <h3 className="font-serif text-xl leading-tight text-[#16130f]">{project.title}</h3>
-          <p className="line-clamp-2 text-sm leading-6 text-[#7b705f]">{project.hook}</p>
+          <p className="line-clamp-2 text-sm leading-6 text-[#6a5f4e]">{project.hook}</p>
         </div>
       </a>
     </article>
@@ -124,7 +101,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
     candidate.roleType === "recruiter"
       ? await fetchPublicRecruiterOpportunities(supabase, candidate.userId)
       : [];
-  const cvLink = candidate.portfolioLinks.find((link) => isValidCvLink(link)) ?? null;
+  const cvLink = findCvLink(candidate.portfolioLinks) || null;
   const portfolioLinks = candidate.portfolioLinks.filter((link) => !isValidCvLink(link));
   const displayName = candidate.name ?? "Merit User";
   const featuredProject = candidate.projects.find((project) => project.isFeatured) ?? candidate.projects[0] ?? null;
@@ -150,7 +127,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
       <section className="editorial-container pt-8 sm:pt-10">
         <div className="grid gap-4 border-b border-[#d7cebd] pb-5 sm:pb-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div className="space-y-3">
-            <div className="flex h-14 w-14 items-center justify-center bg-[#dfd6c6] font-serif text-xl text-[#7b705f] sm:h-16 sm:w-16 sm:text-2xl">
+            <div className="flex h-14 w-14 items-center justify-center bg-[#dfd6c6] font-serif text-xl text-[#6a5f4e] sm:h-16 sm:w-16 sm:text-2xl">
               {initialsForName(displayName)}
             </div>
             <div className="max-w-4xl space-y-2.5">
@@ -158,9 +135,9 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
                 {displayName}
               </h1>
               {candidate.headline ? (
-                <p className="max-w-3xl text-sm leading-6 text-[#7b705f] sm:text-base">{candidate.headline}</p>
+                <p className="max-w-3xl text-sm leading-6 text-[#6a5f4e] sm:text-base">{candidate.headline}</p>
               ) : null}
-              <div className="space-y-1 text-xs uppercase tracking-[0.12em] text-[#7b705f] sm:text-sm">
+              <div className="space-y-1 text-xs uppercase tracking-[0.12em] text-[#6a5f4e] sm:text-sm">
                 <p>{candidate.roleType === "recruiter" ? "Recruiter Passport" : "Passport"}</p>
                 {candidate.targetRoles.length > 0 ? (
                   <p className="text-[#d8aa14]">Open to {candidate.targetRoles.slice(0, 2).join(" / ")}</p>
@@ -190,7 +167,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
                       src={featuredVisual.previewUrl}
                     />
                   ) : (
-                    <div className="flex min-h-60 items-center justify-center bg-[#e5ded1] text-[#7b705f]">
+                    <div className="flex min-h-60 items-center justify-center bg-[#e5ded1] text-[#6a5f4e]">
                       Preview coming soon
                     </div>
                   )}
@@ -200,7 +177,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
                 <div className="max-w-3xl space-y-3">
                   <h2 className="font-serif text-2xl leading-tight text-[#16130f]">{featuredProject.title}</h2>
                   <CollapsibleText
-                    className="text-[#7b705f]"
+                    className="text-[#6a5f4e]"
                     collapsedClassName="line-clamp-2"
                     description={featuredProject.hook}
                     threshold={140}
@@ -224,7 +201,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
               </div>
             </article>
           ) : (
-            <div className="border border-dashed border-[#d7cebd] px-8 py-10 text-center text-[#7b705f]">
+            <div className="border border-dashed border-[#d7cebd] px-8 py-10 text-center text-[#6a5f4e]">
               No public projects yet.
             </div>
           )}
@@ -234,7 +211,7 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
           <details className="group pt-12">
             <summary className="mb-5 flex cursor-pointer list-none items-center justify-between border-b border-[#d7cebd] pb-4">
               <p className="label-caps">Selected works</p>
-              <span className="flex items-center gap-2 text-sm text-[#7b705f]">
+              <span className="flex items-center gap-2 text-sm text-[#6a5f4e]">
                 {archiveProjects.length} more
                 <span className={iconControlClassName({ className: "h-8 w-8 transition-transform group-open:rotate-180", variant: "ghost" })}>
                   <ActionIcon name="chevron-down" />
@@ -257,17 +234,17 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
           <div className="pt-12">
             <h2 className="mb-5 font-serif text-2xl text-[#16130f]">Posted opportunities</h2>
             {recruiterOpportunities.length === 0 ? (
-              <p className="text-sm text-[#7b705f]">No opportunities posted yet.</p>
+              <p className="text-sm text-[#6a5f4e]">No opportunities posted yet.</p>
             ) : (
               <div className="grid gap-4 md:grid-cols-2">
                 {recruiterOpportunities.map((opportunity) => (
                   <article className="space-y-3 border border-[#d7cebd] bg-[#eee8dd] p-5" key={opportunity.opportunityId}>
                     <div className="space-y-1">
                       <h3 className="font-serif text-2xl text-[#16130f]">{opportunity.title}</h3>
-                      <p className="text-sm text-[#7b705f]">{opportunity.company}</p>
+                      <p className="text-sm text-[#6a5f4e]">{opportunity.company}</p>
                     </div>
                     <CollapsibleText
-                      className="text-sm leading-6 text-[#7b705f]"
+                      className="text-sm leading-6 text-[#6a5f4e]"
                       collapsedClassName="line-clamp-3"
                       description={opportunity.description}
                       threshold={180}
@@ -291,13 +268,13 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
             <p className="label-caps">About</p>
             {candidate.bio ? (
               <CollapsibleText
-                className="max-w-xl text-[#7b705f]"
+                className="max-w-xl text-[#6a5f4e]"
                 collapsedClassName="line-clamp-4"
                 description={candidate.bio}
                 threshold={220}
               />
             ) : (
-              <p className="text-base leading-7 text-[#7b705f]">No biography has been added yet.</p>
+              <p className="text-base leading-7 text-[#6a5f4e]">No biography has been added yet.</p>
             )}
             {cvLink ? (
               <a className="inline-flex text-sm text-[#16130f] underline underline-offset-4" href={cvLink} rel="noreferrer" target="_blank">

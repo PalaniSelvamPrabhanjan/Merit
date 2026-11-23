@@ -45,7 +45,7 @@ export function PeopleDirectory({ members }: PeopleDirectoryProps) {
     <section className="editorial-container space-y-6 py-8">
       <header className="border-b border-[#d7cebd] pb-5">
           <h1 className="font-serif text-4xl leading-none text-[#16130f]">People</h1>
-        <p className="mt-4 max-w-2xl text-sm leading-6 text-[#7b705f]">
+        <p className="mt-4 max-w-2xl text-sm leading-6 text-[#6a5f4e]">
           Find builders by name, role, skills, and recent project evidence. Projects stay in Explore; this page is for people.
         </p>
       </header>
@@ -57,14 +57,14 @@ export function PeopleDirectory({ members }: PeopleDirectoryProps) {
           placeholder="Search by name, headline, role, skill, or project title"
           value={query}
         />
-        <p className="text-sm text-[#7b705f] md:text-right">
+        <p className="text-sm text-[#6a5f4e] md:text-right">
           Showing {visibleMembers.length} of {members.length} users
         </p>
       </div>
 
       {visibleMembers.length === 0 ? (
         <Card className="border-dashed bg-transparent">
-          <p className="text-sm text-[#7b705f]">No people match that search.</p>
+          <p className="text-sm text-[#6a5f4e]">No people match that search.</p>
         </Card>
       ) : (
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -76,13 +76,13 @@ export function PeopleDirectory({ members }: PeopleDirectoryProps) {
                     {member.name ?? "Merit User"}
                   </p>
                   {member.headline ? (
-                    <p className="mt-1 text-sm leading-6 text-[#7b705f]">{member.headline}</p>
+                    <p className="mt-1 text-sm leading-6 text-[#6a5f4e]">{member.headline}</p>
                   ) : null}
                 </div>
                 <Badge className="capitalize">{member.roleType ?? "candidate"}</Badge>
               </div>
 
-              <p className="text-sm text-[#7b705f]">
+              <p className="text-sm text-[#6a5f4e]">
                 {member.projectCount} project{member.projectCount === 1 ? "" : "s"}
               </p>
 
@@ -93,7 +93,7 @@ export function PeopleDirectory({ members }: PeopleDirectoryProps) {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-[#7b705f]">No skills tagged yet.</p>
+                <p className="text-sm text-[#6a5f4e]">No skills tagged yet.</p>
               )}
 
               {member.recentProjects.length > 0 ? (
@@ -102,7 +102,7 @@ export function PeopleDirectory({ members }: PeopleDirectoryProps) {
                     Recent evidence
                   </p>
                   {member.recentProjects.map((project) => (
-                    <p className="text-sm text-[#7b705f]" key={`${member.userId}-${project.title}`}>
+                    <p className="text-sm text-[#6a5f4e]" key={`${member.userId}-${project.title}`}>
                       {project.title} <span className="text-[#9b907e]">({project.category})</span>
                     </p>
                   ))}

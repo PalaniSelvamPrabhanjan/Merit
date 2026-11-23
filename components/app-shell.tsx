@@ -42,7 +42,7 @@ export function AppShell({ children, userEmail, roleType }: AppShellProps) {
     <div className="min-h-screen bg-[#f4f0e8] text-[#16130f]">
       <header className="sticky top-0 z-40 border-b border-[#d7cebd] bg-[#f4f0e8]/95 backdrop-blur-sm">
         <div className="editorial-wide flex min-h-16 items-center gap-5 py-3">
-          <Link className="font-serif text-3xl italic leading-none text-[#f3c945]" href="/">
+          <Link className="font-serif text-3xl italic leading-none text-[#8a6a00]" href="/">
             Merit
           </Link>
 
@@ -92,6 +92,12 @@ export function AppShell({ children, userEmail, roleType }: AppShellProps) {
                 <Link className="text-[#16130f] hover:text-[#6f6658]" href="/sign-in">
                   Sign In
                 </Link>
+                <Link
+                  className="border border-[#d9ae19] bg-[#f3c945] px-3 py-1.5 font-medium text-[#11100e] transition-colors hover:bg-[#f6d45d]"
+                  href="/sign-up"
+                >
+                  Sign Up
+                </Link>
               </>
             )}
           </div>
@@ -121,7 +127,7 @@ export function AppShell({ children, userEmail, roleType }: AppShellProps) {
       </header>
       <main className="page-fade">{children}</main>
       <footer className="mt-24 border-t border-[#d7cebd] bg-[#eee8dd]/70">
-        <div className="editorial-wide flex flex-wrap items-center justify-between gap-2 py-5 text-xs text-[#7b705f]">
+        <div className="editorial-wide flex flex-wrap items-center justify-between gap-2 py-5 text-xs text-[#6a5f4e]">
           <p>Merit</p>
           <div className="flex flex-wrap items-center gap-3">
             <Link className="hover:text-[#16130f]" href="/terms">

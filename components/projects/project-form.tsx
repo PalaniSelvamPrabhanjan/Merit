@@ -506,11 +506,11 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
           <div className="max-w-3xl space-y-3">
             <p className="label-caps">Project editor</p>
             <h1 className="font-serif text-3xl leading-none text-[#16130f]">{heading}</h1>
-            <p className="text-sm leading-6 text-[#7b705f]">
+            <p className="text-sm leading-6 text-[#6a5f4e]">
               Shape this project into a clear case study with strong visuals, proof links, and concise context.
             </p>
           </div>
-          <div className="border border-[#d7cebd] bg-[#eee8dd] px-4 py-3 text-sm text-[#7b705f]">
+          <div className="border border-[#d7cebd] bg-[#eee8dd] px-4 py-3 text-sm text-[#6a5f4e]">
             {preparedArtifacts.length} artifact{preparedArtifacts.length === 1 ? "" : "s"} attached
           </div>
         </div>
@@ -521,7 +521,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
           <Card className="space-y-4">
             <div>
               <h2 className="font-serif text-2xl text-[#16130f]">Choose project type</h2>
-              <p className="mt-2 text-sm text-[#7b705f]">Pick the format that best describes your main deliverable.</p>
+              <p className="mt-2 text-sm text-[#6a5f4e]">Pick the format that best describes your main deliverable.</p>
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
               {(["web", "design", "document", "other"] as const).map((type) => (
@@ -549,7 +549,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
             <label className="flex cursor-pointer items-start justify-between gap-4 border border-[#d7cebd] bg-[#f4f0e8] p-3 text-sm text-[#16130f]">
               <span>
                 <span className="block font-semibold">Feature on public passport</span>
-                <span className="mt-1 block text-xs leading-5 text-[#7b705f]">
+                <span className="mt-1 block text-xs leading-5 text-[#6a5f4e]">
                   Make this the first project recruiters see on your passport.
                 </span>
               </span>
@@ -565,13 +565,13 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
           <Card className="space-y-4">
             <div>
               <h2 className="font-serif text-2xl text-[#16130f]">Add main content</h2>
-              <p className="mt-2 text-sm text-[#7b705f]">
+              <p className="mt-2 text-sm text-[#6a5f4e]">
                 Upload files, paste links, and ensure at least one visual preview source.
               </p>
             </div>
             <div className="border border-[#d7cebd] bg-[#f4f0e8] px-4 py-3">
               <p className="label-caps">In-Merit viewer tips</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[#7b705f]">
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[#6a5f4e]">
                 {artifactTips(projectType).map((tip) => (
                   <li key={tip}>{tip}</li>
                 ))}
@@ -619,7 +619,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#16130f]">Drop project files here</p>
-                    <p className="text-xs text-[#7b705f]">
+                    <p className="text-xs text-[#6a5f4e]">
                       Drag files or click Choose files. Max 50MB each (media, CAD, PDFs, decks).
                     </p>
                   </div>
@@ -792,7 +792,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
           <Card className="space-y-4">
             <div>
               <h2 className="font-serif text-2xl text-[#16130f]">Title and story</h2>
-              <p className="mt-2 text-sm text-[#7b705f]">Keep this concise and scannable for discovery feed browsing.</p>
+              <p className="mt-2 text-sm text-[#6a5f4e]">Keep this concise and scannable for discovery feed browsing.</p>
             </div>
             <label className="block space-y-2 text-sm text-ink-900">
               Project title
@@ -822,7 +822,7 @@ export function ProjectForm({ mode, initialData }: ProjectFormProps) {
           <Card className="space-y-4">
             <div>
               <h2 className="font-serif text-2xl text-[#16130f]">Skills and impact</h2>
-              <p className="mt-2 text-sm text-[#7b705f]">These improve filtering, search, and recruiter context.</p>
+              <p className="mt-2 text-sm text-[#6a5f4e]">These improve filtering, search, and recruiter context.</p>
             </div>
             <label className="block space-y-2 text-sm text-ink-900">
               Skill tags (comma separated)

@@ -41,7 +41,7 @@ export function ProjectCard({ project, showAuthor = true, actions, source }: Pro
               src={visual.previewUrl}
             />
           ) : (
-            <div className="flex h-full items-center justify-center bg-[#e5ded1] text-sm font-medium text-[#7b705f]">
+            <div className="flex h-full items-center justify-center bg-[#e5ded1] text-sm font-medium text-[#6a5f4e]">
               Visual preview coming soon
             </div>
           )}
@@ -60,11 +60,11 @@ export function ProjectCard({ project, showAuthor = true, actions, source }: Pro
       <div className="flex flex-1 flex-col gap-2 pt-3">
         <Link className="block space-y-2" href={projectHref}>
           <h3 className="line-clamp-2 font-serif text-xl leading-tight text-[#16130f]">{project.title}</h3>
-          <p className="line-clamp-2 min-h-[3rem] text-sm leading-6 text-[#7b705f]">{project.hook || "No hook added yet."}</p>
+          <p className="line-clamp-2 min-h-[3rem] text-sm leading-6 text-[#6a5f4e]">{project.hook || "No hook added yet."}</p>
         </Link>
 
         {showAuthor ? (
-          <p className="line-clamp-1 min-h-5 text-sm text-[#7b705f]">
+          <p className="line-clamp-1 min-h-5 text-sm text-[#6a5f4e]">
             {project.authorName ?? "Candidate"}
             {project.authorHeadline ? ` / ${project.authorHeadline}` : ""}
           </p>

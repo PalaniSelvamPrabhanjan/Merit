@@ -7,8 +7,6 @@ import { isRateLimitedAuthError, mapSupabaseAuthError } from "@/lib/auth/auth-er
 import { resolvePasswordResetRedirectUrl } from "@/lib/auth/auth-urls";
 import {
   getSupportEmail,
-  getSupportInstagramHandle,
-  getSupportInstagramUrl,
   getSupportUrl
 } from "@/lib/public-config";
 import { Button } from "@/components/ui/button";
@@ -26,8 +24,6 @@ function isValidEmail(value: string) {
 
 export default function ForgotPasswordPage() {
   const supportEmail = getSupportEmail();
-  const supportInstagramHandle = getSupportInstagramHandle();
-  const supportInstagramUrl = getSupportInstagramUrl();
   const supportUrl = getSupportUrl();
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -74,7 +70,7 @@ export default function ForgotPasswordPage() {
       <Card className="mx-auto w-full max-w-lg space-y-6 bg-transparent">
         <div className="space-y-5 text-center">
           <h1 className="font-serif text-4xl leading-tight text-[#16130f]">Reset your password</h1>
-          <p className="mx-auto max-w-md text-base leading-7 text-[#7b705f]">Enter your email and we will send a reset link.</p>
+          <p className="mx-auto max-w-md text-base leading-7 text-[#6a5f4e]">Enter your email and we will send a reset link.</p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -98,14 +94,14 @@ export default function ForgotPasswordPage() {
           </Button>
         </form>
 
-        <p className="text-sm text-[#7b705f]">
+        <p className="text-sm text-[#6a5f4e]">
           Back to{" "}
           <Link className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4" href="/sign-in">
             sign in
           </Link>
           .
         </p>
-        <p className="text-xs leading-5 text-[#7b705f]">
+        <p className="text-xs leading-5 text-[#6a5f4e]">
           Need help? Contact{" "}
           <a
             className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4"
@@ -114,15 +110,6 @@ export default function ForgotPasswordPage() {
             target="_blank"
           >
             {supportEmail}
-          </a>{" "}
-          or{" "}
-          <a
-            className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4"
-            href={supportInstagramUrl}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {supportInstagramHandle}
           </a>
           .
         </p>

@@ -12,6 +12,14 @@ const variantMap: Record<ButtonVariant, string> = {
   danger: "bg-red-600 text-white hover:bg-red-700"
 };
 
+const baseClassName =
+  "inline-flex min-h-10 items-center justify-center gap-2 rounded-none px-4 py-2 text-sm font-medium transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60";
+
+/** Button styling for elements that are not <button>, such as a Next.js <Link>. */
+export function buttonClassName(variant: ButtonVariant = "primary", className?: string) {
+  return cn(baseClassName, variantMap[variant], className);
+}
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -25,11 +33,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={cn(
-        "inline-flex min-h-10 items-center justify-center gap-2 rounded-none px-4 py-2 text-sm font-medium transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60",
-        variantMap[variant],
-        className
-      )}
+      className={buttonClassName(variant, className)}
       type={type}
       {...props}
     />

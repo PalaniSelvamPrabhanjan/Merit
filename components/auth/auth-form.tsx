@@ -8,8 +8,6 @@ import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 import { isRateLimitedAuthError, mapAuthCallbackErrorParam, mapSupabaseAuthError } from "@/lib/auth/auth-errors";
 import {
   getSupportEmail,
-  getSupportInstagramHandle,
-  getSupportInstagramUrl,
   getSupportUrl
 } from "@/lib/public-config";
 import { Button } from "@/components/ui/button";
@@ -97,8 +95,6 @@ export function AuthForm({ mode }: AuthFormProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const supportEmail = getSupportEmail();
-  const supportInstagramHandle = getSupportInstagramHandle();
-  const supportInstagramUrl = getSupportInstagramUrl();
   const supportUrl = getSupportUrl();
   const requestedNextParam = searchParams.get("next");
   const requestedNextPath = resolveSafeAuthNext(requestedNextParam);
@@ -452,7 +448,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           <h1 className="font-serif text-4xl leading-tight text-[#16130f]">
             {isSignUp ? "Create your Merit account" : "Welcome back"}
           </h1>
-          <p className="mx-auto max-w-md text-base leading-7 text-[#7b705f]">
+          <p className="mx-auto max-w-md text-base leading-7 text-[#6a5f4e]">
             {isSignUp
               ? "Start building a profile around proof of work."
               : "Sign in to continue building your proof profile."}
@@ -545,7 +541,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         </form>
 
         {!isSignUp ? (
-          <p className="text-sm text-[#7b705f]">
+          <p className="text-sm text-[#6a5f4e]">
             <Link className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4" href="/forgot-password">
               Forgot password?
             </Link>
@@ -554,7 +550,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
         {pendingVerificationEmail ? (
           <div className="border border-[#d7cebd] bg-[#eee8dd] p-4">
-            <p className="text-sm text-[#7b705f]">
+            <p className="text-sm text-[#6a5f4e]">
               Pending verification email: <strong>{pendingVerificationEmail}</strong>
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -574,7 +570,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           </div>
         ) : null}
 
-        <p className="text-sm text-[#7b705f]">
+        <p className="text-sm text-[#6a5f4e]">
           {isSignUp ? "Already have an account?" : "Need an account?"}{" "}
           <Link
             className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4"
@@ -583,7 +579,7 @@ export function AuthForm({ mode }: AuthFormProps) {
             {isSignUp ? "Sign in" : "Sign up"}
           </Link>
         </p>
-        <p className="text-xs leading-5 text-[#7b705f]">
+        <p className="text-xs leading-5 text-[#6a5f4e]">
           Need help? Contact{" "}
           <a
             className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4"
@@ -592,15 +588,6 @@ export function AuthForm({ mode }: AuthFormProps) {
             target="_blank"
           >
             {supportEmail}
-          </a>{" "}
-          or{" "}
-          <a
-            className="text-[#16130f] underline decoration-[#f3c945] underline-offset-4"
-            href={supportInstagramUrl}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {supportInstagramHandle}
           </a>
           .
         </p>

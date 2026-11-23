@@ -9,7 +9,7 @@
   --bg-surface: #fbf8f0;
   --ink-strong: #11100e;
   --ink-body: #2d2923;
-  --ink-muted: #7b705f;
+  --ink-muted: #6a5f4e;
   --line-subtle: #d7cebd;
   --accent-gold: #f3c945;
   --accent-gold-strong: #d8aa14;
@@ -95,4 +95,10 @@ h3 {
 .luxury-rule {
   height: 1px;
   background: linear-gradient(90deg, rgba(197, 166, 90, 0) 0%, rgba(197, 166, 90, 0.8) 50%, rgba(197, 166, 90, 0) 100%);
+}
+
+/* Visible keyboard focus for every interactive element (WCAG 2.4.7). */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid #16130f;
+  outline-offset: 2px;
 }

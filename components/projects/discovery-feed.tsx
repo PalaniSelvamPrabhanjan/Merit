@@ -93,7 +93,7 @@ export function DiscoveryFeed({
       </div>
 
       {filteredProjects.length === 0 ? (
-        <div className="border border-dashed border-[#d7cebd] px-8 py-16 text-center text-[#7b705f]">
+        <div className="border border-dashed border-[#d7cebd] px-8 py-16 text-center text-[#6a5f4e]">
           No projects matched that search yet.
         </div>
       ) : (

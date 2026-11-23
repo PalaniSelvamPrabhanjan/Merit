@@ -29,7 +29,7 @@ export default async function AdminPassportsPage() {
           <Card className="max-w-2xl space-y-4">
             <p className="label-caps">Unauthorized</p>
             <h1 className="font-serif text-3xl text-[#16130f]">Admin access required</h1>
-            <p className="text-sm leading-6 text-[#7b705f]">
+            <p className="text-sm leading-6 text-[#6a5f4e]">
               This Passport creation area is limited to approved admin/dev accounts.
             </p>
             <Link href="/home">

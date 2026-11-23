@@ -63,7 +63,7 @@ function ClaimableArchiveItem({
               src={imageUrl}
             />
           ) : (
-            <div className="flex h-full items-center justify-center px-6 text-center text-sm text-[#7b705f]">
+            <div className="flex h-full items-center justify-center px-6 text-center text-sm text-[#6a5f4e]">
               Preview coming soon
             </div>
           )}
@@ -75,7 +75,7 @@ function ClaimableArchiveItem({
         </div>
         <div className="mt-4 space-y-1">
           <h3 className="font-serif text-xl leading-tight text-[#16130f]">{project.title}</h3>
-          <p className="line-clamp-2 text-sm leading-6 text-[#7b705f]">{project.hook}</p>
+          <p className="line-clamp-2 text-sm leading-6 text-[#6a5f4e]">{project.hook}</p>
           {artifactUrl ? (
             <a
               className="inline-flex text-sm text-[#16130f] underline underline-offset-4"
@@ -122,7 +122,7 @@ export function ClaimablePassportPreview({ compact = false, passport }: Claimabl
     <article className={compact ? "space-y-8" : "editorial-container pt-12"}>
       <div className="grid gap-6 border-b border-[#d7cebd] pb-8 lg:grid-cols-[1fr_auto] lg:items-end">
         <div className="space-y-5">
-          <div className="flex h-20 w-20 items-center justify-center bg-[#dfd6c6] font-serif text-2xl text-[#7b705f]">
+          <div className="flex h-20 w-20 items-center justify-center bg-[#dfd6c6] font-serif text-2xl text-[#6a5f4e]">
             {initialsForName(passport.fullName)}
           </div>
           <div className="max-w-4xl space-y-4">
@@ -130,9 +130,9 @@ export function ClaimablePassportPreview({ compact = false, passport }: Claimabl
               {passport.fullName}
             </h1>
             {passport.headline ? (
-              <p className="max-w-3xl text-base leading-7 text-[#7b705f]">{passport.headline}</p>
+              <p className="max-w-3xl text-base leading-7 text-[#6a5f4e]">{passport.headline}</p>
             ) : null}
-            <div className="space-y-2 pt-2 text-sm uppercase tracking-[0.12em] text-[#7b705f]">
+            <div className="space-y-2 pt-2 text-sm uppercase tracking-[0.12em] text-[#6a5f4e]">
               <p>Claimable Passport</p>
               <p className={passport.status === "expired" ? "text-red-700" : "text-[#d8aa14]"}>
                 {statusLabel(passport.status)}
@@ -151,7 +151,7 @@ export function ClaimablePassportPreview({ compact = false, passport }: Claimabl
               {featuredImages.length > 0 ? (
                 <ProjectImageCarousel images={featuredImages} title={featuredTitle} />
               ) : (
-                <div className="flex min-h-60 items-center justify-center bg-[#e5ded1] text-[#7b705f]">
+                <div className="flex min-h-60 items-center justify-center bg-[#e5ded1] text-[#6a5f4e]">
                   Preview coming soon
                 </div>
               )}
@@ -160,7 +160,7 @@ export function ClaimablePassportPreview({ compact = false, passport }: Claimabl
               <div className="max-w-3xl space-y-3">
                 <h2 className="font-serif text-2xl leading-tight text-[#16130f]">{featuredTitle}</h2>
                 <CollapsibleText
-                  className="text-[#7b705f]"
+                  className="text-[#6a5f4e]"
                   collapsedClassName="line-clamp-2"
                   description={featuredHook}
                   threshold={140}
@@ -182,7 +182,7 @@ export function ClaimablePassportPreview({ compact = false, passport }: Claimabl
             </div>
           </article>
         ) : (
-          <div className="border border-dashed border-[#d7cebd] px-8 py-10 text-center text-[#7b705f]">
+          <div className="border border-dashed border-[#d7cebd] px-8 py-10 text-center text-[#6a5f4e]">
             No public projects yet.
           </div>
         )}
@@ -192,7 +192,7 @@ export function ClaimablePassportPreview({ compact = false, passport }: Claimabl
         <details className="group pt-12">
           <summary className="mb-5 flex cursor-pointer list-none items-center justify-between border-b border-[#d7cebd] pb-4">
             <p className="label-caps">Selected works</p>
-            <span className="flex items-center gap-2 text-sm text-[#7b705f]">
+            <span className="flex items-center gap-2 text-sm text-[#6a5f4e]">
               {archiveProjects.length} more
               <span className={iconControlClassName({ className: "h-8 w-8 transition-transform group-open:rotate-180", variant: "ghost" })}>
                 <ActionIcon name="chevron-down" />
@@ -215,13 +215,13 @@ export function ClaimablePassportPreview({ compact = false, passport }: Claimabl
           <p className="label-caps">About</p>
           {passport.bio ? (
             <CollapsibleText
-              className="max-w-xl text-[#7b705f]"
+              className="max-w-xl text-[#6a5f4e]"
               collapsedClassName="line-clamp-4"
               description={passport.bio}
               threshold={220}
             />
           ) : (
-            <p className="max-w-xl text-base leading-7 text-[#7b705f]">
+            <p className="max-w-xl text-base leading-7 text-[#6a5f4e]">
               No biography has been added yet.
             </p>
           )}

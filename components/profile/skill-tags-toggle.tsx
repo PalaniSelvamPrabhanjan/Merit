@@ -15,7 +15,7 @@ export function SkillTagsToggle({ limit = 8, skills }: SkillTagsToggleProps) {
   const hasOverflow = uniqueSkills.length > limit;
 
   if (uniqueSkills.length === 0) {
-    return <p className="text-sm text-[#7b705f]">No skills added yet.</p>;
+    return <p className="text-sm text-[#6a5f4e]">No skills added yet.</p>;
   }
 
   return (
