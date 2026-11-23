@@ -10,6 +10,57 @@ type Table<Row, Insert, Update> = {
 export type Database = {
   public: {
     Tables: {
+      resumes: Table<
+        {
+          resume_id: string;
+          user_id: string;
+          data: Json;
+          schema_version: number;
+          score: number | null;
+          created_at: string;
+          updated_at: string;
+        },
+        {
+          resume_id?: string;
+          user_id: string;
+          data: Json;
+          schema_version?: number;
+          score?: number | null;
+          created_at?: string;
+          updated_at?: string;
+        },
+        {
+          data?: Json;
+          schema_version?: number;
+          score?: number | null;
+          updated_at?: string;
+        }
+      >;
+      resume_versions: Table<
+        {
+          version_id: string;
+          resume_id: string;
+          user_id: string;
+          data: Json;
+          schema_version: number;
+          score: number | null;
+          reason: "download" | "manual";
+          created_at: string;
+        },
+        {
+          version_id?: string;
+          resume_id: string;
+          user_id: string;
+          data: Json;
+          schema_version?: number;
+          score?: number | null;
+          reason?: "download" | "manual";
+          created_at?: string;
+        },
+        {
+          data?: Json;
+        }
+      >;
       analytics_events: Table<
         {
           event_id: string;
